@@ -93,15 +93,15 @@ button { padding:10px 16px; margin:5px; font-size:16px; border-radius:8px; borde
 <script>
 // ==================== 偶像資料 ====================
 const idols = [
-{ name:"Wonyoung", group:"IZ*ONE/IVE", nationality:"Korea", birth:2004, debut:2021, members:6 },
-{ name:"Yujin", group:"IZ*ONE/IVE", nationality:"Korea", birth:2003, debut:2021, members:6 },
+{ name:"Wonyoung", group:"IVE", nationality:"Korea", birth:2004, debut:2021, members:6 },
+{ name:"Yujin", group:"IVE", nationality:"Korea", birth:2003, debut:2021, members:6 },
 { name:"Gaeul", group:"IVE", nationality:"Korea", birth:2002, debut:2021, members:6 },
 { name:"Rei", group:"IVE", nationality:"Japan", birth:2004, debut:2021, members:6 },
 { name:"Liz", group:"IVE", nationality:"Korea", birth:2004, debut:2021, members:6 },
 { name:"Leeseo", group:"IVE", nationality:"Korea", birth:2007, debut:2021, members:6 },
 
-{ name:"Sakura", group:"IZ*ONE/LE SSERAFIM", nationality:"Japan", birth:1998, debut:2022, members:5 },
-{ name:"Chaewon", group:"IZ*ONE/LE SSERAFIM", nationality:"Korea", birth:2000, debut:2022, members:5 },
+{ name:"Sakura", group:"LE SSERAFIM", nationality:"Japan", birth:1998, debut:2022, members:5 },
+{ name:"Chaewon", group:"LE SSERAFIM", nationality:"Korea", birth:2000, debut:2022, members:5 },
 { name:"Yunjin", group:"LE SSERAFIM", nationality:"Korea/USA", birth:2001, debut:2022, members:5 },
 { name:"Kazuha", group:"LE SSERAFIM", nationality:"Japan", birth:2003, debut:2022, members:5 },
 { name:"Eunchae", group:"LE SSERAFIM", nationality:"Korea", birth:2006, debut:2022, members:5 },
@@ -236,7 +236,7 @@ const idols = [
 { name:"Ezaki Hikaru", group:"Kep1er", nationality:"Japan", birth:2004, debut:2022, members:6 },
 { name:"Huening Bahiyyih", group:"Kep1er", nationality:"Korea/USA", birth:2004, debut:2022, members:6 },
 
-{ name:"MASHIRO", group:"MADEIN/Kep1er", nationality:"Japan", birth:1999, debut:2024, members:4 },
+{ name:"MASHIRO", group:"MADEIN", nationality:"Japan", birth:1999, debut:2024, members:4 },
 { name:"MiU", group:"MADEIN", nationality:"Japan", birth:2003, debut:2024, members:4 },
 { name:"SERINA", group:"MADEIN", nationality:"Japan", birth:2006, debut:2024, members:4 },
 { name:"NAGOMI", group:"MADEIN", nationality:"Japan", birth:2007, debut:2024, members:4 },
@@ -246,7 +246,7 @@ const idols = [
 { name:"Hwiseo", group:"H1-KEY", nationality:"Korea", birth:2002, debut:2022, members:4 },
 { name:"Yel", group:"H1-KEY", nationality:"Korea", birth:2004, debut:2022, members:4 },
 
-{ name:"HITOMI", group:"IZ*ONE/SAY MY NAME", nationality:"Japan", birth:2001, debut:2024, members:8 },
+{ name:"HITOMI", group:"SAY MY NAME", nationality:"Japan", birth:2001, debut:2024, members:8 },
 { name:"SHUIE", group:"SAY MY NAME", nationality:"China", birth:2004, debut:2024, members:8 },
 { name:"MEI", group:"SAY MY NAME", nationality:"Japan", birth:2005, debut:2024, members:8 },
 { name:"KANNY", group:"SAY MY NAME", nationality:"Thailand", birth:2005, debut:2024, members:8 },
@@ -263,12 +263,10 @@ const idols = [
 { name:"Rora", group:"BABYMONSTER", nationality:"Korea", birth:2008, debut:2024, members:7 },
 { name:"Chiquita", group:"BABYMONSTER", nationality:"Thailand", birth:2009, debut:2024, members:7 },
 
-{ name:"Choi Yena", group:"IZ*ONE/SOLO", nationality:"Korea", birth:1999, debut:2022, members:1 },
-{ name:"Kwon Eunbi", group:"IZ*ONE/SOLO", nationality:"Korea", birth:1995, debut:2021, members:1 },
-{ name:"Lee ChaeYeon", group:"IZ*ONE/SOLO", nationality:"Korea", birth:2000, debut:2022, members:1 },
-{ name:"Jo YuRi", group:"IZ*ONE/SOLO", nationality:"Korea", birth:2001, debut:2021, members:1 },
-{ name:"Kim Chung Ha", group:"I.O.I/SOLO", nationality:"Korea", birth:1996, debut:2017, members:1 },
-{ name:"Kim Se Jeong", group:"I.O.I/SOLO", nationality:"Korea", birth:1996, debut:2016, members:1 },
+{ name:"Choi Yena", group:"SOLO", nationality:"Korea", birth:1999, debut:2022, members:1 },
+{ name:"Kwon Eunbi", group:"SOLO", nationality:"Korea", birth:1995, debut:2021, members:1 },
+{ name:"Lee ChaeYeon", group:"SOLO", nationality:"Korea", birth:2000, debut:2022, members:1 },
+{ name:"Jo YuRi", group:"SOLO", nationality:"Korea", birth:2001, debut:2021, members:1 },
 
 { name:"Hyojung", group:"OH MY GIRL", nationality:"Korea", birth:1994, debut:2015, members:6 },
 { name:"Mimi", group:"OH MY GIRL", nationality:"Korea", birth:1995, debut:2015, members:6 },
@@ -286,15 +284,7 @@ const idols = [
 { name:"EunSeo", group:"WJSN", nationality:"Korea", birth:1998, debut:2016, members:10 },
 { name:"YeoReum", group:"WJSN", nationality:"Korea", birth:1999, debut:2016, members:10 },
 { name:"DaYoung", group:"WJSN", nationality:"Korea", birth:1999, debut:2016, members:10 },
-{ name:"YeonJung", group:"I.O.I/WJSN", nationality:"Korea", birth:1999, debut:2016, members:10 },
-
-{ name:"JiU", group:"Dreamcatcher", nationality:"Korea", birth:1994, debut:2017, members:7 },
-{ name:"SuA", group:"Dreamcatcher", nationality:"Korea", birth:1994, debut:2017, members:7 },
-{ name:"SiYeon", group:"Dreamcatcher", nationality:"Korea", birth:1995, debut:2017, members:7 },
-{ name:"HanDong", group:"Dreamcatcher", nationality:"China", birth:1996, debut:2017, members:7 },
-{ name:"YooHyeon", group:"Dreamcatcher", nationality:"Korea", birth:1997, debut:2017, members:7 },
-{ name:"DaMi", group:"Dreamcatcher", nationality:"Korea", birth:1997, debut:2017, members:7 },
-{ name:"GaHyun", group:"Dreamcatcher", nationality:"Korea", birth:1999, debut:2017, members:7 },
+{ name:"YeonJung", group:"WJSN", nationality:"Korea", birth:1999, debut:2016, members:10 },
 ];
 
 // 遊戲變數
