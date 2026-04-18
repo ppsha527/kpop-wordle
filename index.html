@@ -51,7 +51,7 @@
     }
     input:disabled {
         background: #1a1a1f;
-        color: #777;
+        color: #888;
         cursor: not-allowed;
     }
     input:focus { box-shadow: 0 0 0 3px rgba(255, 20, 147, 0.4); }
@@ -131,7 +131,7 @@
         border-collapse: collapse;
         background: #1a1a1f;
         width: 100%;
-        min-width: 950px; /* 讓手機可橫向捲動 */
+        min-width: 950px;
         table-layout: fixed;
         font-size: 16px;
     }
@@ -158,9 +158,12 @@
     .timeout { background: #555 !important; color: #aaa; }
 
     #result {
-        min-height: 60px;
-        margin: 15px 0 20px 0;
-        font-size: 18px;
+        min-height: 85px;
+        margin: 20px 0 25px 0;
+        font-size: 21px;
+        font-weight: bold;
+        line-height: 1.4;
+        color: #ffeb3b;
     }
 
     .footer {
@@ -171,7 +174,6 @@
         border-radius: 16px;
     }
 
-    /* 手機優化 */
     @media (max-width: 600px) {
         h1 { font-size: 1.95em; }
         button { font-size: 15px; padding: 11px 18px; }
@@ -180,6 +182,7 @@
         th, td { padding: 11px 6px; }
         #gameSetup { padding: 16px; gap: 16px; }
         .count-col { width: 48px; }
+        #result { font-size: 19px; }
     }
 </style>
 </head>
@@ -283,6 +286,7 @@
 <script>
 // ================== 資料 ==================
 const idols = [
+    // 你的完整 idols 陣列（請保持不變）
 { name:"Wonyoung", group:"IVE", nationality:"南韓", birth:2004, debut:2021, members:6 },
 { name:"Yujin", group:"IVE", nationality:"南韓", birth:2003, debut:2021, members:6 },
 { name:"Gaeul", group:"IVE", nationality:"南韓", birth:2002, debut:2021, members:6 },
@@ -508,7 +512,7 @@ let answer = {}, gameOver = false, guessCount = 0, currentMax = 6;
 let guessedSet = new Set();
 let timerInterval = null;
 let timeLeft = 0;
-let gameStarted = false;   // 新增：控制是否已開始遊戲
+let gameStarted = false;
 
 const guessInput = document.getElementById('guessInput');
 const suggestions = document.getElementById('suggestions');
@@ -516,12 +520,20 @@ const gameBody = document.getElementById('gameBody');
 const result = document.getElementById('result');
 const timerDisplay = document.getElementById('timer');
 
-// 國籍比對
 function getNationalityClass(guessed, correct) {
     if (guessed === correct) return 'correct';
     const g = guessed.split('/').map(s => s.trim());
     const c = correct.split('/').map(s => s.trim());
     return g.some(gg => c.includes(gg)) || c.some(cc => g.includes(cc)) ? 'close' : 'wrong';
+}
+
+function disableInput() {
+    guessInput.disabled = true;
+    suggestions.innerHTML = "";
+}
+
+function showFinalAnswer() {
+    result.innerHTML = `正確答案是 <b>${answer.name} (${answer.group})</b>`;
 }
 
 // ================== 遊戲設定 ==================
@@ -565,7 +577,7 @@ function startNewGame(max, timeLimit) {
     result.innerHTML = "";
     guessInput.value = "";
     suggestions.innerHTML = "";
-    guessInput.disabled = false;   // 啟用輸入
+    guessInput.disabled = false;
 
     updateTimerDisplay(timeLimit);
     if (timerInterval) clearInterval(timerInterval);
@@ -597,12 +609,15 @@ function skipCurrentGuess() {
     if (guessCount >= currentMax) return;
     guessCount++;
     markRowAsTimeout(guessCount);
+
     if (guessCount >= currentMax) {
-        result.innerHTML = `😢 遊戲結束！正確答案是 <b>${answer.name} (${answer.group})</b>`;
         gameOver = true;
         timerDisplay.textContent = `本次回答剩餘時間：結束`;
+        showFinalAnswer();
+        disableInput();
         return;
     }
+    
     const timeSelect = parseInt(document.getElementById('timeLimit').value);
     if (timeSelect > 0) startTimer(timeSelect);
 }
@@ -667,18 +682,20 @@ function guess() {
     if (timerInterval) clearInterval(timerInterval);
    
     fillRow(guessCount, idol);
-   
+
     if (idol.name === answer.name && idol.group === answer.group) {
-        result.innerHTML = `🎉 恭喜猜對！答案是 <b>${answer.name} (${answer.group})</b>`;
         gameOver = true;
         timerDisplay.textContent = `本次回答剩餘時間：完成！`;
+        showFinalAnswer();     // 猜對時顯示答案
+        disableInput();
         return;
     }
    
     if (guessCount >= currentMax) {
-        result.innerHTML = `😢 遊戲結束！正確答案是 <b>${answer.name} (${answer.group})</b>`;
         gameOver = true;
         timerDisplay.textContent = `本次回答剩餘時間：結束`;
+        showFinalAnswer();     // 用完次數時顯示答案
+        disableInput();
         return;
     }
    
@@ -787,14 +804,13 @@ function showRules() {
 祝你玩得愉快！`);
 }
 
-// Enter 送出
 guessInput.addEventListener('keypress', e => {
     if (e.key === 'Enter') guess();
 });
 
 window.onload = () => {
     initTableRows();
-    guessInput.disabled = true;   // 預設禁用輸入框
+    guessInput.disabled = true;
 };
 </script>
 </body>
