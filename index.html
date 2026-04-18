@@ -5,16 +5,14 @@
 <title>KPOP Guess Game</title>
 <style>
 body { font-family: Arial; background:#121213; color:white; text-align:center; margin:0; padding:0;}
-input { padding:12px; font-size:18px; border-radius:8px; border:none; margin:5px; width:320px; }
+input { padding:10px; font-size:14px; border-radius:6px; border:none; margin:4px; }
 
 #suggestions { 
     max-height:220px; overflow-y:auto; margin:8px auto; 
     text-align:left; width:340px; background:#1f1f21; 
     border-radius:8px; border:1px solid #333;
 }
-#suggestions div { 
-    padding:10px 14px; cursor:pointer; border-bottom:1px solid #333;
-}
+#suggestions div { padding:10px; cursor:pointer; border-bottom:1px solid #333;}
 #suggestions div:hover { background:#333; }
 
 .correct { background:#6aaa64; }
@@ -22,76 +20,96 @@ input { padding:12px; font-size:18px; border-radius:8px; border:none; margin:5px
 .wrong { background:#3a3a3c; }
 
 table { margin:20px auto; border-collapse:collapse; }
-td, th { border:1px solid #444; padding:10px 12px; }
+td, th { border:1px solid #444; padding:8px; }
 
 #remaining { font-size:18px; margin:10px; color:#bbb; }
-button { padding:10px 16px; margin:5px; font-size:16px; border-radius:8px; border:none; cursor:pointer; }
+button { padding:8px 14px; margin:5px; border-radius:6px; border:none; cursor:pointer; }
 
 #dbBtn {
     position: fixed; top: 15px; right: 15px;
-    background: #444; color: white; padding: 8px 14px;
-    font-size: 14px; border-radius: 6px; z-index: 100;
+    background: #444; color: white;
 }
 
 #databaseModal {
-    display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0,0,0,0.85); z-index: 200; justify-content: center; align-items: center;
+    display: none; position: fixed; top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.85);
+    justify-content: center; align-items: center;
 }
 #modalContent {
-    background: #1f1f21; width: 90%; max-width: 700px; max-height: 85vh;
-    overflow-y: auto; border-radius: 12px; padding: 20px;
-}
-.group-title {
-    color: #6aaa64; margin: 20px 0 10px 0; border-bottom: 2px solid #6aaa64;
-    padding-bottom: 5px;
-}
-#idolList div {
-    padding: 6px 12px;
+    background: #1f1f21;
+    width: 95%; max-width: 900px;
+    max-height: 90vh;
+    overflow-y: auto;
+    border-radius: 10px;
+    padding: 20px;
 }
 </style>
 </head>
 <body>
+
 <h1>🎤 KPOP Guess Game</h1>
 
 <button id="dbBtn" onclick="showDatabase()">📋 題庫</button>
 
 <div id="difficulty">
-    <button onclick="startNewGame(10)">簡單 (10次)</button>
-    <button onclick="startNewGame(8)">中等 (8次)</button>
-    <button onclick="startNewGame(6)">困難 (6次)</button>
+    <button onclick="startNewGame(10)">簡單</button>
+    <button onclick="startNewGame(8)">中等</button>
+    <button onclick="startNewGame(6)">困難</button>
 </div>
 
-<input id="guessInput" placeholder="輸入偶像名字 (例如: Wonyoung (IVE))" 
-       autocomplete="off" oninput="showSuggestions()">
-
+<input id="guessInput" placeholder="輸入偶像 (Wonyoung (IVE))" oninput="showSuggestions()">
 <div id="suggestions"></div>
 
-<h3 id="remaining">剩餘猜測次數：10</h3>
+<h3 id="remaining"></h3>
 <h2 id="result"></h2>
-<button onclick="startNewGame(currentMax)" style="background:#555;">新遊戲</button>
 
-<table id="table">
-    <thead>
-        <tr>
-            <th>Name</th><th>Group</th><th>Nationality</th><th>Birth</th><th>Debut</th><th>Members</th>
-        </tr>
-    </thead>
-    <tbody id="gameBody"></tbody>
+<table>
+<thead>
+<tr>
+<th>Name</th><th>Group</th><th>Nationality</th><th>Birth</th><th>Debut</th><th>Members</th>
+</tr>
+</thead>
+<tbody id="gameBody"></tbody>
 </table>
 
-<!-- 資料庫彈窗 -->
+<!-- 題庫 -->
 <div id="databaseModal">
-    <div id="modalContent">
-        <h2>📋 題庫總覽 (<span id="totalCount"></span> 位偶像)</h2>
-        <input type="text" id="modalSearch" placeholder="搜尋名字或團名..." 
-               onkeyup="filterDatabase()" style="width:100%; margin-bottom:15px; padding:10px;">
-        <div id="idolList"></div>
-        <button onclick="closeDatabase()" style="background:#c44; width:100%; margin-top:15px;">關閉</button>
-    </div>
+<div id="modalContent">
+
+<h2>📋 題庫 (<span id="totalCount"></span>)</h2>
+
+<div>
+<input id="fGroup" placeholder="Group">
+<input id="fNat" placeholder="Nationality">
+<input id="fBirth" placeholder="Birth">
+<input id="fDebut" placeholder="Debut">
+<input id="fMembers" placeholder="Members">
+<button onclick="renderDatabase()">篩選</button>
+</div>
+
+<table style="width:100%; margin-top:10px;">
+<thead>
+<tr>
+<th>Name</th>
+<th>Group</th>
+<th>Nationality</th>
+<th>Birth</th>
+<th>Debut</th>
+<th>Members</th>
+</tr>
+</thead>
+<tbody id="dbBody"></tbody>
+</table>
+
+<button onclick="closeDatabase()" style="background:#c44; width:100%; margin-top:10px;">關閉</button>
+
+</div>
 </div>
 
 <script>
-// ==================== 偶像資料 ====================
+
+// ===== 資料 =====
 const idols = [
 { name:"Wonyoung", group:"IVE", nationality:"南韓", birth:2004, debut:2021, members:6 },
 { name:"Yujin", group:"IVE", nationality:"南韓", birth:2003, debut:2021, members:6 },
@@ -312,210 +330,120 @@ const idols = [
 { name:"GYUBIN", group:"SOLO", nationality:"南韓", birth:2006, debut:2024, members:1 }
 ];
 
-// 遊戲變數
-let answer = {};
-let gameOver = false;
-let guessCount = 0;
-let currentMax = 10;
+// ===== 遊戲 =====
+let answer={}, gameOver=false, guessCount=0, currentMax=10;
 
-// ==================== 開始新遊戲 ====================
-function startNewGame(maxGuesses) {
-    currentMax = maxGuesses;
-    answer = idols[Math.floor(Math.random() * idols.length)];
-    gameOver = false;
-    guessCount = 0;
-
-    document.getElementById("gameBody").innerHTML = "";
-    document.getElementById("result").innerHTML = "";
-    document.getElementById("guessInput").value = "";
-    document.getElementById("suggestions").innerHTML = "";
+function startNewGame(max){
+    currentMax=max;
+    answer=idols[Math.floor(Math.random()*idols.length)];
+    gameOver=false; guessCount=0;
+    document.getElementById("gameBody").innerHTML="";
+    document.getElementById("result").innerHTML="";
     updateRemaining();
-
-    console.log("新答案：", answer.name, "(", answer.group, ")");
 }
 
-// ==================== 顯示推薦 ====================
-function showSuggestions() {
-    const input = document.getElementById("guessInput").value.toLowerCase().trim();
-    const sugBox = document.getElementById("suggestions");
-    sugBox.innerHTML = "";
+function showSuggestions(){
+    const val=document.getElementById("guessInput").value.toLowerCase();
+    const box=document.getElementById("suggestions");
+    box.innerHTML="";
+    if(!val)return;
 
-    if (!input || gameOver) return;
-
-    const matches = idols.filter(i => 
-        i.name.toLowerCase().includes(input) || 
-        i.group.toLowerCase().includes(input)
-    ).slice(0, 10);
-
-    matches.forEach(i => {
-        const div = document.createElement("div");
-        div.innerText = `${i.name} (${i.group})`;
-        div.onclick = () => {
-            document.getElementById("guessInput").value = `${i.name} (${i.group})`;
-            sugBox.innerHTML = "";
-            guess();
-        };
-        sugBox.appendChild(div);
+    idols.filter(i=>i.name.toLowerCase().includes(val)||i.group.toLowerCase().includes(val))
+    .forEach(i=>{
+        const d=document.createElement("div");
+        d.innerText=`${i.name} (${i.group})`;
+        d.onclick=()=>{document.getElementById("guessInput").value=d.innerText; guess();}
+        box.appendChild(d);
     });
 }
 
-// ==================== 找偶像 ====================
-function findIdol(input) {
-    input = input.trim();
-    const match = input.match(/^(.*?)\s*\((.*?)\)$/);
-    if (match) {
-        const name = match[1].trim().toLowerCase();
-        const group = match[2].trim().toLowerCase();
-        return idols.find(i => i.name.toLowerCase() === name && i.group.toLowerCase() === group);
-    }
-    return idols.find(i => i.name.toLowerCase() === input.toLowerCase());
+function findIdol(input){
+    const m=input.match(/^(.*?)\((.*?)\)$/);
+    if(!m)return;
+    return idols.find(i=>i.name===m[1].trim()&&i.group===m[2].trim());
 }
 
-// ==================== 數字比對 ====================
-function compare(val, ans) {
-    if (val === ans) return {cls:"correct"};
-    if (Math.abs(val - ans) === 1) return {cls:"close"};
-    return {cls:"wrong"};
+function compare(a,b){
+    if(a===b)return"correct";
+    if(Math.abs(a-b)<=1)return"close";
+    return"wrong";
 }
 
-// ==================== 新增一行 ====================
-function addRow(idol) {
-    const tbody = document.getElementById("gameBody");
-    const row = tbody.insertRow();
-
-    let cell = row.insertCell();
-    cell.textContent = idol.name;
-    cell.className = (idol.name === answer.name) ? "correct" : "wrong";
-
-    cell = row.insertCell();
-    cell.textContent = idol.group;
-    cell.className = (idol.group === answer.group) ? "correct" : "wrong";
-
-    const idolNats = idol.nationality.toLowerCase().split(/[\/,]/).map(s => s.trim());
-    const ansNats = answer.nationality.toLowerCase().split(/[\/,]/).map(s => s.trim());
-    let natClass = "wrong";
-    if (idolNats.length === ansNats.length && idolNats.every(n => ansNats.includes(n))) natClass = "correct";
-    else if (idolNats.some(n => ansNats.includes(n))) natClass = "close";
-
-    cell = row.insertCell();
-    cell.textContent = idol.nationality;
-    cell.className = natClass;
-
-    const b = compare(idol.birth, answer.birth);
-    cell = row.insertCell(); cell.textContent = idol.birth; cell.className = b.cls;
-
-    const d = compare(idol.debut, answer.debut);
-    cell = row.insertCell(); cell.textContent = idol.debut; cell.className = d.cls;
-
-    const m = compare(idol.members, answer.members);
-    cell = row.insertCell(); cell.textContent = idol.members; cell.className = m.cls;
+function addRow(i){
+    const r=document.getElementById("gameBody").insertRow();
+    r.insertCell().textContent=i.name;
+    r.insertCell().textContent=i.group;
+    r.insertCell().textContent=i.nationality;
+    r.insertCell().textContent=i.birth;
+    r.insertCell().textContent=i.debut;
+    r.insertCell().textContent=i.members;
 }
 
-// ==================== 更新剩餘次數 ====================
-function updateRemaining() {
-    document.getElementById("remaining").textContent = `剩餘猜測次數：${currentMax - guessCount}`;
+function updateRemaining(){
+    document.getElementById("remaining").innerText="剩餘："+(currentMax-guessCount);
 }
 
-// ==================== 猜測 ====================
-function guess() {
-    if (gameOver) return;
-    const input = document.getElementById("guessInput").value.trim();
-    if (!input) return;
-
-    const idol = findIdol(input);
-    if (!idol) { alert("找不到這個偶像！"); return; }
-
-    const already = Array.from(document.querySelectorAll("#gameBody tr")).some(r =>
-        r.cells[0].textContent === idol.name && r.cells[1].textContent === idol.group
-    );
-    if (already) { alert("已經猜過這個人了！"); return; }
+function guess(){
+    if(gameOver)return;
+    const input=document.getElementById("guessInput").value;
+    const i=findIdol(input);
+    if(!i)return alert("錯誤");
 
     guessCount++;
-    addRow(idol);
+    addRow(i);
     updateRemaining();
 
-    if (idol.name === answer.name && idol.group === answer.group) {
-        document.getElementById("result").innerHTML = `🎉 恭喜猜對！答案就是 <b>${answer.name} (${answer.group})</b>`;
-        gameOver = true;
-        return;
+    if(i.name===answer.name){
+        document.getElementById("result").innerHTML="🎉 正確："+answer.name;
+        gameOver=true;
     }
-
-    if (guessCount >= currentMax) {
-        document.getElementById("result").innerHTML = `😢 遊戲結束！正確答案是 <b>${answer.name} (${answer.group})</b>`;
-        gameOver = true;
-    }
-
-    document.getElementById("guessInput").value = "";
-    document.getElementById("suggestions").innerHTML = "";
 }
 
-// ==================== 題庫（依照團體分組 + 多團拆分）===================
-function showDatabase() {
-    const modal = document.getElementById("databaseModal");
-    const list = document.getElementById("idolList");
-    list.innerHTML = "";
-
-    const groups = {};
-
-    idols.forEach(i => {
-        const groupList = i.group.split('/');   // 用 / 拆分多團
-
-        groupList.forEach(g => {
-            const cleanGroup = g.trim();
-            if (!groups[cleanGroup]) groups[cleanGroup] = [];
-            groups[cleanGroup].push(i);
-        });
-    });
-
-    // 排序團體名稱
-    Object.keys(groups).sort().forEach(groupName => {
-        const members = groups[groupName];
-
-        const title = document.createElement("div");
-        title.className = "group-title";
-        title.innerHTML = `<strong>${groupName}</strong> (${members.length} 人)`;
-        list.appendChild(title);
-
-        // 成員排序（可選）
-        members.sort((a,b) => a.name.localeCompare(b.name)).forEach(member => {
-            const div = document.createElement("div");
-            div.innerText = `• ${member.name} (${member.nationality})`;
-            list.appendChild(div);
-        });
-    });
-
-    document.getElementById("totalCount").textContent = idols.length;
-    modal.style.display = "flex";
+// ===== 題庫 =====
+function showDatabase(){
+    document.getElementById("databaseModal").style.display="flex";
+    document.getElementById("totalCount").innerText=idols.length;
+    renderDatabase();
 }
 
-function closeDatabase() {
-    document.getElementById("databaseModal").style.display = "none";
+function closeDatabase(){
+    document.getElementById("databaseModal").style.display="none";
 }
 
-function filterDatabase() {
-    const keyword = document.getElementById("modalSearch").value.toLowerCase().trim();
-    const list = document.getElementById("idolList");
-    list.innerHTML = "";
+function renderDatabase(){
+    const body=document.getElementById("dbBody");
+    body.innerHTML="";
 
-    const filtered = idols.filter(i => 
-        i.name.toLowerCase().includes(keyword) || 
-        i.group.toLowerCase().includes(keyword)
-    );
+    const g=document.getElementById("fGroup").value.toLowerCase();
+    const n=document.getElementById("fNat").value.toLowerCase();
+    const b=document.getElementById("fBirth").value;
+    const d=document.getElementById("fDebut").value;
+    const m=document.getElementById("fMembers").value;
 
-    filtered.forEach(i => {
-        const div = document.createElement("div");
-        div.innerText = `${i.name} (${i.group})`;
-        list.appendChild(div);
+    idols.filter(i=>
+        (!g||i.group.toLowerCase().includes(g)) &&
+        (!n||i.nationality.toLowerCase().includes(n)) &&
+        (!b||i.birth==b) &&
+        (!d||i.debut==d) &&
+        (!m||i.members==m)
+    ).forEach(i=>{
+        const r=body.insertRow();
+        r.insertCell().textContent=i.name;
+        r.insertCell().textContent=i.group;
+        r.insertCell().textContent=i.nationality;
+        r.insertCell().textContent=i.birth;
+        r.insertCell().textContent=i.debut;
+        r.insertCell().textContent=i.members;
     });
 }
 
-// Enter 鍵
-document.getElementById("guessInput").addEventListener("keypress", e => {
-    if (e.key === "Enter") guess();
+// Enter
+document.getElementById("guessInput").addEventListener("keypress",e=>{
+    if(e.key==="Enter")guess();
 });
 
-// 預設開始
 startNewGame(10);
+
 </script>
 </body>
 </html>
