@@ -17,23 +17,22 @@
     }
     h1 {
         margin: 15px 0 10px;
-        font-size: 2.5em;
+        font-size: 2.2em;
         text-shadow: 0 0 15px rgba(255, 20, 147, 0.5);
     }
-    #dbBtn {
-        position: fixed; top: 15px; right: 15px;
-        background: #333; color: white; padding: 10px 16px;
-        border: none; border-radius: 8px; cursor: pointer;
+    #dbBtn, #rulesBtn {
+        position: fixed; 
+        right: 15px;
+        padding: 10px 16px;
+        border: none; 
+        border-radius: 8px; 
+        cursor: pointer;
         font-size: 15px;
         z-index: 100;
     }
-    #rulesBtn {
-        position: fixed; top: 65px; right: 15px;
-        background: #4a90e2; color: white; padding: 10px 16px;
-        border: none; border-radius: 8px; cursor: pointer;
-        font-size: 15px;
-        z-index: 100;
-    }
+    #dbBtn { top: 15px; background: #333; color: white; }
+    #rulesBtn { top: 65px; background: #4a90e2; color: white; }
+
     .input-area {
         margin: 15px auto;
         max-width: 420px;
@@ -50,7 +49,13 @@
         color: white;
         box-shadow: 0 4px 15px rgba(0,0,0,0.3);
     }
+    input:disabled {
+        background: #1a1a1f;
+        color: #777;
+        cursor: not-allowed;
+    }
     input:focus { box-shadow: 0 0 0 3px rgba(255, 20, 147, 0.4); }
+
     #suggestions {
         position: absolute;
         left: 50%;
@@ -68,14 +73,25 @@
         box-shadow: 0 6px 20px rgba(0,0,0,0.4);
         z-index: 10;
     }
-    #suggestions div { padding: 14px 18px; cursor: pointer; border-bottom: 1px solid #333; }
+    #suggestions div { 
+        padding: 14px 18px; 
+        cursor: pointer; 
+        border-bottom: 1px solid #333; 
+    }
     #suggestions div:hover { background: #333; }
+
     button {
-        padding: 12px 20px; margin: 8px 4px; font-size: 16px;
-        border-radius: 10px; border: none; cursor: pointer;
-        background: #333; color: white;
+        padding: 12px 20px; 
+        margin: 8px 4px; 
+        font-size: 16px;
+        border-radius: 10px; 
+        border: none; 
+        cursor: pointer;
+        background: #333; 
+        color: white;
     }
     button:hover { background: #555; transform: translateY(-2px); }
+
     #gameSetup {
         margin: 15px auto;
         max-width: 580px;
@@ -87,6 +103,7 @@
         align-items: center;
         gap: 18px;
     }
+
     #timeLimit {
         padding: 12px 16px;
         font-size: 18px;
@@ -94,28 +111,32 @@
         color: white;
         border: none;
         border-radius: 10px;
-        min-width: 160px;
     }
+
     #timer {
-        font-size: 24px;
+        font-size: 22px;
         font-weight: bold;
         color: #ffeb3b;
-        margin: 8px 0 12px 0;
+        margin: 10px 0 15px 0;
+    }
+
+    .table-container {
+        overflow-x: auto;
+        margin: 10px auto 40px auto;
+        max-width: 100%;
+        border-radius: 12px;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.5);
     }
     table {
-        margin: 10px auto 40px auto;
         border-collapse: collapse;
         background: #1a1a1f;
-        border-radius: 12px;
-        overflow: hidden;
-        box-shadow: 0 8px 25px rgba(0,0,0,0.5);
-        font-size: 17px;
         width: 100%;
-        max-width: 1250px;
+        min-width: 950px; /* 讓手機可橫向捲動 */
         table-layout: fixed;
+        font-size: 16px;
     }
     th, td {
-        padding: 14px 10px;
+        padding: 12px 8px;
         border: none;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -123,18 +144,25 @@
     }
     th {
         background: #25252b;
-        font-size: 16px;
+        font-size: 15px;
         border-bottom: 2px solid #444;
     }
-    .count-col { width: 65px; text-align: center; font-weight: bold; }
+    .count-col { 
+        width: 55px; 
+        text-align: center; 
+        font-weight: bold; 
+    }
     .correct { background: #6aaa64 !important; color: white; }
     .close { background: #c9b458 !important; color: black; }
     .wrong { background: #3a3a3c !important; }
     .timeout { background: #555 !important; color: #aaa; }
+
     #result {
         min-height: 60px;
-        margin: 10px 0 20px 0;
+        margin: 15px 0 20px 0;
+        font-size: 18px;
     }
+
     .footer {
         margin-top: 60px;
         padding: 40px 20px 30px;
@@ -142,19 +170,16 @@
         background: rgba(31, 31, 37, 0.8);
         border-radius: 16px;
     }
-    .social-area {
-        font-size: 22px;
-        margin-bottom: 15px;
-    }
-    .social-area a {
-        margin: 0 25px;
-        text-decoration: none;
-    }
-    .social-area img {
-        width: 55px;
-        height: 55px;
-        border-radius: 10px;
-        vertical-align: middle;
+
+    /* 手機優化 */
+    @media (max-width: 600px) {
+        h1 { font-size: 1.95em; }
+        button { font-size: 15px; padding: 11px 18px; }
+        input { font-size: 17px; padding: 15px 16px; }
+        table { font-size: 15px; }
+        th, td { padding: 11px 6px; }
+        #gameSetup { padding: 16px; gap: 16px; }
+        .count-col { width: 48px; }
     }
 </style>
 </head>
@@ -165,7 +190,6 @@
 
     <div id="gameSetup">
         <h3>遊戲設定</h3>
-       
         <div style="display:flex; gap:12px; flex-wrap:wrap; justify-content:center;">
             <div>
                 難度：
@@ -174,7 +198,7 @@
                 <button onclick="selectDifficulty(4)">困難 (4次)</button>
             </div>
         </div>
-       
+        
         <div style="display:flex; gap:15px; align-items:center; flex-wrap:wrap; justify-content:center;">
             <label style="font-size:17px;">每次作答時間：
                 <select id="timeLimit">
@@ -186,7 +210,7 @@
                 </select>
             </label>
         </div>
-       
+        
         <div style="display:flex; gap:12px; flex-wrap:wrap; justify-content:center;">
             <button onclick="startGameWithSettings()" style="background:#e91e63; font-size:16px; padding:12px 28px;">
                 ▶️ 開始遊戲
@@ -200,27 +224,30 @@
     <div id="timer">本次回答剩餘時間：不計時</div>
     
     <div class="input-area">
-        <input id="guessInput" placeholder="輸入偶像名字" autocomplete="off" oninput="showSuggestions()">
+        <input id="guessInput" placeholder="輸入偶像名字（請先按開始遊戲）" 
+               autocomplete="off" oninput="showSuggestions()" disabled>
         <div id="suggestions"></div>
     </div>
-   
+  
     <h2 id="result"></h2>
-    <table>
-        <thead>
-            <tr>
-                <th class="count-col">次數</th>
-                <th>名字</th><th>團體</th><th>國籍</th><th>出生年</th><th>出道年</th><th>成員數</th>
-            </tr>
-        </thead>
-        <tbody id="gameBody"></tbody>
-    </table>
+    
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th class="count-col">次數</th>
+                    <th>名字</th><th>團體</th><th>國籍</th><th>出生年</th><th>出道年</th><th>成員數</th>
+                </tr>
+            </thead>
+            <tbody id="gameBody"></tbody>
+        </table>
+    </div>
 
     <!-- 題庫彈窗 -->
     <div id="databaseModal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.9);justify-content:center;align-items:center;z-index:200;">
         <div style="background:#1f1f21;width:90%;max-width:1200px;max-height:90vh;overflow:auto;border-radius:16px;padding:25px;position:relative;">
             <button onclick="closeDatabase()" style="position:absolute;top:15px;right:15px;background:#c44;padding:8px 16px;">✕</button>
             <h2>📋 完整題庫</h2>
-          
             <div style="margin:20px 0; display:flex; justify-content:center; gap:10px; flex-wrap:wrap;">
                 <select id="mainFilter" onchange="updateSearchOptions()" style="padding:12px 16px;font-size:16px;">
                     <option value="all">全部</option>
@@ -481,7 +508,7 @@ let answer = {}, gameOver = false, guessCount = 0, currentMax = 6;
 let guessedSet = new Set();
 let timerInterval = null;
 let timeLeft = 0;
-let currentDifficulty = 6;
+let gameStarted = false;   // 新增：控制是否已開始遊戲
 
 const guessInput = document.getElementById('guessInput');
 const suggestions = document.getElementById('suggestions');
@@ -500,7 +527,6 @@ function getNationalityClass(guessed, correct) {
 // ================== 遊戲設定 ==================
 function selectDifficulty(max) {
     currentMax = max;
-    currentDifficulty = max;
     initTableRows();
 }
 
@@ -511,8 +537,6 @@ function initTableRows() {
         let cell = row.insertCell();
         cell.textContent = i;
         cell.classList.add('count-col');
-        
-        // 正確建立 6 個資料欄位（名字、團體、國籍、出生年、出道年、成員數）
         for (let j = 0; j < 6; j++) {
             row.insertCell();
         }
@@ -537,16 +561,16 @@ function startNewGame(max, timeLimit) {
     gameOver = false;
     guessCount = 0;
     guessedSet.clear();
+    gameStarted = true;
     result.innerHTML = "";
     guessInput.value = "";
     suggestions.innerHTML = "";
-   
+    guessInput.disabled = false;   // 啟用輸入
+
     updateTimerDisplay(timeLimit);
-   
     if (timerInterval) clearInterval(timerInterval);
     timeLeft = timeLimit;
     initTableRows();
-   
     if (timeLimit > 0) startTimer(timeLimit);
 }
 
@@ -559,7 +583,6 @@ function updateTimerDisplay(seconds) {
 function startTimer(seconds) {
     timeLeft = seconds;
     if (timerInterval) clearInterval(timerInterval);
-   
     timerInterval = setInterval(() => {
         timeLeft--;
         timerDisplay.textContent = `本次回答剩餘時間：${timeLeft} 秒`;
@@ -574,14 +597,12 @@ function skipCurrentGuess() {
     if (guessCount >= currentMax) return;
     guessCount++;
     markRowAsTimeout(guessCount);
-   
     if (guessCount >= currentMax) {
         result.innerHTML = `😢 遊戲結束！正確答案是 <b>${answer.name} (${answer.group})</b>`;
         gameOver = true;
         timerDisplay.textContent = `本次回答剩餘時間：結束`;
         return;
     }
-   
     const timeSelect = parseInt(document.getElementById('timeLimit').value);
     if (timeSelect > 0) startTimer(timeSelect);
 }
@@ -591,10 +612,8 @@ function markRowAsTimeout(rowNum) {
     if (rowNum > 0 && rowNum <= rows.length) {
         const row = rows[rowNum - 1];
         row.cells[1].textContent = "已超時";
-        row.cells[1].colSpan = 6;   // 修正為 6
+        row.cells[1].colSpan = 6;
         row.cells[1].classList.add('timeout');
-        
-        // 刪除後面多餘的格子
         for (let i = row.cells.length - 1; i >= 2; i--) {
             row.deleteCell(i);
         }
@@ -605,7 +624,7 @@ function markRowAsTimeout(rowNum) {
 function showSuggestions() {
     let input = guessInput.value.toLowerCase().trim();
     suggestions.innerHTML = "";
-    if (!input || gameOver) return;
+    if (!input || gameOver || !gameStarted) return;
     
     let filtered = idols.filter(i =>
         !guessedSet.has(i.name + i.group) &&
@@ -615,15 +634,19 @@ function showSuggestions() {
     filtered.forEach(i => {
         let d = document.createElement("div");
         d.textContent = `${i.name} (${i.group})`;
-        d.onclick = () => { 
-            guessInput.value = `${i.name} (${i.group})`; 
-            guess(); 
+        d.onclick = () => {
+            guessInput.value = `${i.name} (${i.group})`;
+            guess();
         };
         suggestions.appendChild(d);
     });
 }
 
 function guess() {
+    if (!gameStarted) {
+        alert("請先按「開始遊戲」！");
+        return;
+    }
     if (gameOver || guessCount >= currentMax) return;
     
     const input = guessInput.value.trim();
@@ -755,21 +778,22 @@ function showRules() {
 1. 先選擇難度與每題作答時間，再按「開始遊戲」
 2. 時間到會自動標記「已超時」，並跳過該次機會
 3. 綠色=正確，黃色=接近，灰色=錯誤
-   接近的判定
-   (1)國籍：多國籍其中1個正確
-   (2)出生年、出道年、成員數：正負1之內
+   接近的判定範圍
+   (1)國籍：其中一個正確就算接近
+   (2)出生年、出道年、成員數：正負1之內算接近
 4. 題庫皆為現役藝人，遊玩前可先查看題庫
-5. 如果還有問題，歡迎透過Threads告訴我
+
 祝你玩得愉快！`);
 }
 
 // Enter 送出
-guessInput.addEventListener('keypress', e => { 
-    if (e.key === 'Enter') guess(); 
+guessInput.addEventListener('keypress', e => {
+    if (e.key === 'Enter') guess();
 });
 
 window.onload = () => {
     initTableRows();
+    guessInput.disabled = true;   // 預設禁用輸入框
 };
 </script>
 </body>
