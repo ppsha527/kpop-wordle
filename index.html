@@ -2,6 +2,7 @@
 <html lang="zh-TW">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>KPOP Wordle</title>
 <style>
     body {
@@ -10,23 +11,37 @@
         color: white;
         text-align: center;
         margin: 0;
-        padding: 20px;
+        padding: 15px;
         min-height: 100vh;
+        box-sizing: border-box;
     }
     h1 {
-        margin: 20px 0 10px;
-        font-size: 2.8em;
+        margin: 15px 0 10px;
+        font-size: 2.5em;
         text-shadow: 0 0 15px rgba(255, 20, 147, 0.5);
     }
+
     #dbBtn {
-        position: fixed; top: 20px; right: 20px;
+        position: fixed; top: 15px; right: 15px;
         background: #333; color: white; padding: 10px 16px;
         border: none; border-radius: 8px; cursor: pointer;
         font-size: 15px;
         z-index: 100;
     }
+    #rulesBtn {
+        position: fixed; top: 65px; right: 15px;
+        background: #4a90e2; color: white; padding: 10px 16px;
+        border: none; border-radius: 8px; cursor: pointer;
+        font-size: 15px;
+        z-index: 100;
+    }
 
-    .input-area { margin: 25px auto; max-width: 400px; }
+    .input-area { 
+        margin: 15px auto; 
+        max-width: 420px; 
+        width: 100%;
+        position: relative;           /* 關鍵：讓建議框絕對定位 */
+    }
     input {
         padding: 16px 20px;
         font-size: 18px;
@@ -40,10 +55,21 @@
     input:focus { box-shadow: 0 0 0 3px rgba(255, 20, 147, 0.4); }
 
     #suggestions {
-        max-height: 260px; overflow-y: auto; margin: 8px auto;
-        text-align: left; width: 100%; max-width: 400px;
-        background: #1f1f25; border-radius: 12px;
-        border: 1px solid #444; box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        top: 100%;
+        max-height: 260px; 
+        overflow-y: auto; 
+        margin: 4px 0 0 0;
+        text-align: left; 
+        width: 100%; 
+        max-width: 420px;
+        background: #1f1f25; 
+        border-radius: 12px;
+        border: 1px solid #444; 
+        box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+        z-index: 10;
     }
     #suggestions div { padding: 14px 18px; cursor: pointer; border-bottom: 1px solid #333; }
     #suggestions div:hover { background: #333; }
@@ -55,52 +81,155 @@
     }
     button:hover { background: #555; transform: translateY(-2px); }
 
-    #newGameBtn { background: #e91e63; font-size: 17px; padding: 14px 28px; margin: 15px 0; }
+    #gameSetup {
+        margin: 15px auto;
+        max-width: 580px;
+        background: #1f1f25;
+        padding: 20px;
+        border-radius: 16px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 18px;
+    }
+
+    #timeLimit {
+        padding: 12px 16px;
+        font-size: 18px;
+        background: #25252b;
+        color: white;
+        border: none;
+        border-radius: 10px;
+        min-width: 160px;
+    }
+
+    #timer {
+        font-size: 24px;
+        font-weight: bold;
+        color: #ffeb3b;
+        margin: 8px 0 12px 0;
+    }
 
     table {
-        margin: 30px auto;
+        margin: 10px auto 40px auto;
         border-collapse: collapse;
         background: #1a1a1f;
         border-radius: 12px;
         overflow: hidden;
         box-shadow: 0 8px 25px rgba(0,0,0,0.5);
         font-size: 17px;
+        width: 100%;
+        max-width: 1250px;
+        table-layout: fixed;
     }
-    th, td { padding: 16px 12px; border-top: 1px solid #333; }
-    th { background: #25252b; font-size: 16px; }
+    th, td { 
+        padding: 14px 10px; 
+        border: none;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+    th { 
+        background: #25252b; 
+        font-size: 16px;
+        border-bottom: 2px solid #444;
+    }
+    .count-col { width: 65px; text-align: center; font-weight: bold; }
 
     .correct { background: #6aaa64 !important; color: white; }
     .close { background: #c9b458 !important; color: black; }
     .wrong { background: #3a3a3c !important; }
+    .timeout { background: #555 !important; color: #aaa; }
 
-    #remaining { font-size: 22px; margin: 10px 0 20px 0; color: #ddd; }
-    #result { min-height: 70px; margin: 15px 0; }
+    #result { 
+        min-height: 60px; 
+        margin: 10px 0 20px 0; 
+    }
+
+    .footer {
+        margin-top: 60px;
+        padding: 40px 20px 30px;
+        border-top: 2px solid #444;
+        background: rgba(31, 31, 37, 0.8);
+        border-radius: 16px;
+    }
+    .social-area {
+        font-size: 22px;
+        margin-bottom: 15px;
+    }
+    .social-area a {
+        margin: 0 25px;
+        text-decoration: none;
+    }
+    .social-area img {
+        width: 55px;
+        height: 55px;
+        border-radius: 10px;
+        vertical-align: middle;
+    }
 </style>
 </head>
 <body>
     <h1>🎤 KPOP Wordle</h1>
+
     <button id="dbBtn" onclick="showDatabase()">📋 題庫</button>
+    <button id="rulesBtn" onclick="showRules()">📜 遊戲規則</button>
 
-    <button id="newGameBtn" onclick="confirmNewGame()">🔄 新遊戲</button>
-
-    <div id="difficulty">
-        <button onclick="selectDifficulty(8)">簡單 (8次)</button>
-        <button onclick="selectDifficulty(6)">中等 (6次)</button>
-        <button onclick="selectDifficulty(4)">困難 (4次)</button>
+    <!-- 遊戲設定 - 三排布局 -->
+    <div id="gameSetup">
+        <h3>遊戲設定</h3>
+        
+        <!-- 第一排：難度 -->
+        <div style="display:flex; gap:12px; flex-wrap:wrap; justify-content:center;">
+            <div>
+                難度：
+                <button onclick="selectDifficulty(8)">簡單 (8次)</button>
+                <button onclick="selectDifficulty(6)">中等 (6次)</button>
+                <button onclick="selectDifficulty(4)">困難 (4次)</button>
+            </div>
+        </div>
+        
+        <!-- 第二排：秒數 -->
+        <div style="display:flex; gap:15px; align-items:center; flex-wrap:wrap; justify-content:center;">
+            <label style="font-size:17px;">每次作答時間：
+                <select id="timeLimit">
+                    <option value="0">不計時</option>
+                    <option value="30">30 秒</option>
+                    <option value="60" selected>60 秒</option>
+                    <option value="90">90 秒</option>
+                    <option value="120">120 秒</option>
+                </select>
+            </label>
+        </div>
+        
+        <!-- 第三排：開始遊戲 + 新遊戲 -->
+        <div style="display:flex; gap:12px; flex-wrap:wrap; justify-content:center;">
+            <button onclick="startGameWithSettings()" 
+                    style="background:#e91e63; font-size:16px; padding:12px 28px;">
+                ▶️ 開始遊戲
+            </button>
+            
+            <button onclick="confirmNewGame()" 
+                    style="background:#333; font-size:16px; padding:12px 24px;">
+                🔄 新遊戲
+            </button>
+        </div>
     </div>
+
+    <div id="timer">本次回答剩餘時間：不計時</div>
 
     <div class="input-area">
-        <input id="guessInput" placeholder="輸入偶像名字" 
+        <input id="guessInput" placeholder="輸入偶像名字"
                autocomplete="off" oninput="showSuggestions()">
+        <div id="suggestions"></div>
     </div>
-
-    <div id="suggestions"></div>
-    <h3 id="remaining">剩餘猜測次數</h3>
+    
     <h2 id="result"></h2>
 
     <table>
         <thead>
             <tr>
+                <th class="count-col">次數</th>
                 <th>名字</th><th>團體</th><th>國籍</th><th>出生年</th><th>出道年</th><th>成員數</th>
             </tr>
         </thead>
@@ -109,10 +238,10 @@
 
     <!-- 題庫彈窗 -->
     <div id="databaseModal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.9);justify-content:center;align-items:center;z-index:200;">
-        <div style="background:#1f1f21;width:90%;max-width:1000px;max-height:90vh;overflow:auto;border-radius:16px;padding:25px;position:relative;">
+        <div style="background:#1f1f21;width:90%;max-width:1200px;max-height:90vh;overflow:auto;border-radius:16px;padding:25px;position:relative;">
             <button onclick="closeDatabase()" style="position:absolute;top:15px;right:15px;background:#c44;padding:8px 16px;">✕</button>
             <h2>📋 完整題庫</h2>
-            
+           
             <div style="margin:20px 0; display:flex; justify-content:center; gap:10px; flex-wrap:wrap;">
                 <select id="mainFilter" onchange="updateSearchOptions()" style="padding:12px 16px;font-size:16px;">
                     <option value="all">全部</option>
@@ -135,8 +264,26 @@
         </div>
     </div>
 
-    <!-- 推薦選項 datalist -->
     <datalist id="searchList"></datalist>
+
+<!-- 明顯的頁尾社群連結 -->
+<div class="footer">
+    <div class="social-area">
+        <p style="margin-bottom: 25px; font-size: 19px; color: #ddd;">
+            如果喜歡這遊戲，歡迎訂閱追隨支持！
+        </p>
+        
+        <a href="https://www.youtube.com/@kpopcast" target="_blank" 
+           style="margin: 0 25px; font-size: 22px; text-decoration: none; color: #ff4081;">
+            YouTube
+        </a>
+        
+        <a href="https://www.threads.com/@shr1mp_527" target="_blank" 
+           style="margin: 0 25px; font-size: 22px; text-decoration: none; color: #ff4081;">
+            Threads
+        </a>
+    </div>
+</div>
 
 <script>
 // ================== 資料 ==================
@@ -147,18 +294,15 @@ const idols = [
 { name:"Rei", group:"IVE", nationality:"日本", birth:2004, debut:2021, members:6 },
 { name:"Liz", group:"IVE", nationality:"南韓", birth:2004, debut:2021, members:6 },
 { name:"Leeseo", group:"IVE", nationality:"南韓", birth:2007, debut:2021, members:6 },
-
 { name:"Sakura", group:"LE SSERAFIM", nationality:"日本", birth:1998, debut:2022, members:5 },
 { name:"Chaewon", group:"LE SSERAFIM", nationality:"南韓", birth:2000, debut:2022, members:5 },
 { name:"Yunjin", group:"LE SSERAFIM", nationality:"南韓/美國", birth:2001, debut:2022, members:5 },
 { name:"Kazuha", group:"LE SSERAFIM", nationality:"日本", birth:2003, debut:2022, members:5 },
 { name:"Eunchae", group:"LE SSERAFIM", nationality:"南韓", birth:2006, debut:2022, members:5 },
-
 { name:"Karina", group:"aespa", nationality:"南韓", birth:2000, debut:2020, members:4 },
 { name:"Giselle", group:"aespa", nationality:"日本/南韓", birth:2000, debut:2020, members:4 },
 { name:"Winter", group:"aespa", nationality:"南韓", birth:2001, debut:2020, members:4 },
 { name:"NingNing", group:"aespa", nationality:"中國", birth:2002, debut:2020, members:4 },
-
 { name:"Nayeon", group:"TWICE", nationality:"南韓", birth:1995, debut:2015, members:9 },
 { name:"Jeongyeon", group:"TWICE", nationality:"南韓", birth:1996, debut:2015, members:9 },
 { name:"Momo", group:"TWICE", nationality:"日本", birth:1996, debut:2015, members:9 },
@@ -168,33 +312,28 @@ const idols = [
 { name:"Dahyun", group:"TWICE", nationality:"南韓", birth:1998, debut:2015, members:9 },
 { name:"Chaeyoung", group:"TWICE", nationality:"南韓", birth:1999, debut:2015, members:9 },
 { name:"Tzuyu", group:"TWICE", nationality:"台灣", birth:1999, debut:2015, members:9 },
-
 { name:"Yeji", group:"ITZY", nationality:"南韓", birth:2000, debut:2019, members:5 },
 { name:"Lia", group:"ITZY", nationality:"南韓", birth:2000, debut:2019, members:5 },
 { name:"Ryujin", group:"ITZY", nationality:"南韓", birth:2001, debut:2019, members:5 },
 { name:"Chaeryeong", group:"ITZY", nationality:"南韓", birth:2001, debut:2019, members:5 },
 { name:"Yuna", group:"ITZY", nationality:"南韓", birth:2003, debut:2019, members:5 },
-
 { name:"Lily", group:"NMIXX", nationality:"澳洲/南韓", birth:2002, debut:2022, members:6 },
 { name:"Haewon", group:"NMIXX", nationality:"南韓", birth:2003, debut:2022, members:6 },
 { name:"Sullyoon", group:"NMIXX", nationality:"南韓", birth:2004, debut:2022, members:6 },
 { name:"Jiwoo", group:"NMIXX", nationality:"南韓", birth:2005, debut:2022, members:6 },
 { name:"Bae", group:"NMIXX", nationality:"南韓", birth:2004, debut:2022, members:6 },
 { name:"Kyujin", group:"NMIXX", nationality:"南韓", birth:2006, debut:2022, members:6 },
-
 { name:"Hayoung", group:"fromis_9", nationality:"南韓", birth:1997, debut:2018, members:5 },
 { name:"Jiwon", group:"fromis_9", nationality:"南韓", birth:1998, debut:2018, members:5 },
 { name:"Chaeyoung", group:"fromis_9", nationality:"南韓", birth:2000, debut:2018, members:5 },
 { name:"Nagyung", group:"fromis_9", nationality:"南韓", birth:2000, debut:2018, members:5 },
 { name:"Jiheon", group:"fromis_9", nationality:"南韓", birth:2003, debut:2018, members:5 },
-
 { name:"Sumin", group:"STAYC", nationality:"南韓", birth:2001, debut:2020, members:6 },
 { name:"Sieun", group:"STAYC", nationality:"南韓", birth:2001, debut:2020, members:6 },
 { name:"Isa", group:"STAYC", nationality:"南韓", birth:2002, debut:2020, members:6 },
 { name:"Seeun", group:"STAYC", nationality:"南韓", birth:2003, debut:2020, members:6 },
 { name:"Yoon", group:"STAYC", nationality:"南韓", birth:2004, debut:2020, members:6 },
 { name:"J", group:"STAYC", nationality:"南韓", birth:2004, debut:2020, members:6 },
-
 { name:"Carmen", group:"Hearts2Hearts", nationality:"印尼", birth:2006, debut:2025, members:8 },
 { name:"Jiwoo", group:"Hearts2Hearts", nationality:"南韓", birth:2006, debut:2025, members:8 },
 { name:"Yuha", group:"Hearts2Hearts", nationality:"南韓", birth:2007, debut:2025, members:8 },
@@ -203,37 +342,31 @@ const idols = [
 { name:"A-na", group:"Hearts2Hearts", nationality:"南韓", birth:2008, debut:2025, members:8 },
 { name:"Ian", group:"Hearts2Hearts", nationality:"南韓", birth:2009, debut:2025, members:8 },
 { name:"Ye-on", group:"Hearts2Hearts", nationality:"南韓", birth:2010, debut:2025, members:8 },
-
 { name:"Woni", group:"RESCENE", nationality:"南韓", birth:2004, debut:2024, members:5 },
 { name:"Liv", group:"RESCENE", nationality:"南韓", birth:2006, debut:2024, members:5 },
 { name:"Minami", group:"RESCENE", nationality:"日本", birth:2006, debut:2024, members:5 },
 { name:"May", group:"RESCENE", nationality:"南韓", birth:2008, debut:2024, members:5 },
 { name:"Zena", group:"RESCENE", nationality:"南韓", birth:2008, debut:2024, members:5 },
-
 { name:"Keena", group:"FIFTY FIFTY", nationality:"南韓", birth:2002, debut:2022, members:5 },
 { name:"ChanelleMoon", group:"FIFTY FIFTY", nationality:"南韓/美國", birth:2003, debut:2022, members:5 },
 { name:"Yewon", group:"FIFTY FIFTY", nationality:"南韓", birth:2005, debut:2022, members:5 },
 { name:"Hana", group:"FIFTY FIFTY", nationality:"南韓", birth:2006, debut:2022, members:5 },
 { name:"Athena", group:"FIFTY FIFTY", nationality:"南韓/瑞典", birth:2007, debut:2022, members:5 },
-
 { name:"Leesol", group:"KiiiKiii", nationality:"南韓", birth:2005, debut:2025, members:5 },
 { name:"Sui", group:"KiiiKiii", nationality:"南韓", birth:2006, debut:2025, members:5 },
 { name:"Jiyu", group:"KiiiKiii", nationality:"南韓", birth:2006, debut:2025, members:5 },
 { name:"Haum", group:"KiiiKiii", nationality:"南韓", birth:2006, debut:2025, members:5 },
 { name:"Kya", group:"KiiiKiii", nationality:"南韓", birth:2006, debut:2025, members:5 },
-
 { name:"Yunah", group:"ILLIT", nationality:"南韓", birth:2004, debut:2024, members:5 },
 { name:"Minju", group:"ILLIT", nationality:"南韓", birth:2004, debut:2024, members:5 },
 { name:"Moka", group:"ILLIT", nationality:"日本", birth:2004, debut:2024, members:5 },
 { name:"Wonhee", group:"ILLIT", nationality:"南韓", birth:2007, debut:2024, members:5 },
 { name:"Iroha", group:"ILLIT", nationality:"日本", birth:2008, debut:2024, members:5 },
-
 { name:"Miyeon", group:"i-dle", nationality:"南韓", birth:1997, debut:2018, members:5 },
 { name:"Minnie", group:"i-dle", nationality:"泰國", birth:1997, debut:2018, members:5 },
 { name:"Seoyeon", group:"i-dle", nationality:"南韓", birth:1998, debut:2018, members:5 },
 { name:"Yuqi", group:"i-dle", nationality:"中國", birth:1999, debut:2018, members:5 },
 { name:"Shuhwa", group:"i-dle", nationality:"台灣", birth:2000, debut:2018, members:5 },
-
 { name:"SeoYeon", group:"tripleS", nationality:"南韓", birth:2003, debut:2023, members:24 },
 { name:"HyeRin", group:"tripleS", nationality:"南韓", birth:2007, debut:2023, members:24 },
 { name:"JiWoo", group:"tripleS", nationality:"南韓", birth:2005, debut:2023, members:24 },
@@ -258,64 +391,53 @@ const idols = [
 { name:"Sullin", group:"tripleS", nationality:"泰國", birth:2006, debut:2023, members:24 },
 { name:"SeoAh", group:"tripleS", nationality:"南韓", birth:2010, debut:2023, members:24 },
 { name:"JiYeon", group:"tripleS", nationality:"南韓", birth:2004, debut:2023, members:24 },
-
 { name:"MAI", group:"izna", nationality:"日本", birth:2004, debut:2024, members:6 },
 { name:"BANG JEE MIN", group:"izna", nationality:"南韓", birth:2005, debut:2024, members:6 },
 { name:"KOKO", group:"izna", nationality:"日本", birth:2006, debut:2024, members:6 },
 { name:"RYU SA RANG", group:"izna", nationality:"南韓", birth:2007, debut:2024, members:6 },
 { name:"CHOI JUNG EUN", group:"izna", nationality:"南韓", birth:2007, debut:2024, members:6 },
 { name:"JEONG SAE BI", group:"izna", nationality:"南韓", birth:2008, debut:2024, members:6 },
-
 { name:"Chodan", group:"QWER", nationality:"南韓", birth:1998, debut:2023, members:4 },
 { name:"Magenta", group:"QWER", nationality:"南韓", birth:1997, debut:2023, members:4 },
 { name:"Hina", group:"QWER", nationality:"南韓", birth:2001, debut:2023, members:4 },
 { name:"Siyeon", group:"QWER", nationality:"南韓", birth:2000, debut:2023, members:4 },
-
 { name:"Sooin", group:"MEOVV", nationality:"南韓", birth:2005, debut:2024, members:5 },
 { name:"Gawon", group:"MEOVV", nationality:"南韓/美國", birth:2005, debut:2024, members:5 },
 { name:"Anna", group:"MEOVV", nationality:"日本", birth:2005, debut:2024, members:5 },
 { name:"Narin", group:"MEOVV", nationality:"南韓", birth:2007, debut:2024, members:5 },
 { name:"Ella", group:"MEOVV", nationality:"南韓/美國", birth:2008, debut:2024, members:5 },
-
 { name:"JULIE", group:"KISS OF LIFE", nationality:"南韓/美國", birth:2000, debut:2023, members:4 },
 { name:"NATTY", group:"KISS OF LIFE", nationality:"泰國", birth:2002, debut:2023, members:4 },
 { name:"BELLE", group:"KISS OF LIFE", nationality:"南韓/美國", birth:2004, debut:2023, members:4 },
 { name:"HANEUL", group:"KISS OF LIFE", nationality:"南韓", birth:2005, debut:2023, members:4 },
-
 { name:"Sunhye", group:"YOUNG POSSE", nationality:"南韓", birth:2004, debut:2023, members:5 },
 { name:"Yeonjung", group:"YOUNG POSSE", nationality:"南韓", birth:2004, debut:2023, members:5 },
 { name:"Jiana", group:"YOUNG POSSE", nationality:"南韓", birth:2004, debut:2023, members:5 },
 { name:"Doeun", group:"YOUNG POSSE", nationality:"南韓", birth:2004, debut:2023, members:5 },
 { name:"Jieun", group:"YOUNG POSSE", nationality:"南韓", birth:2004, debut:2023, members:5 },
-
 { name:"Choi Yu Jin", group:"Kep1er", nationality:"南韓", birth:1996, debut:2022, members:6 },
 { name:"Shen Xiao Ting", group:"Kep1er", nationality:"中國", birth:1999, debut:2022, members:6 },
 { name:"Kim Chae Hyun", group:"Kep1er", nationality:"南韓", birth:2002, debut:2022, members:6 },
 { name:"Kim Da Yeon", group:"Kep1er", nationality:"南韓", birth:2003, debut:2022, members:6 },
 { name:"Ezaki Hikaru", group:"Kep1er", nationality:"日本", birth:2004, debut:2022, members:6 },
 { name:"Huening Bahiyyih", group:"Kep1er", nationality:"南韓/美國", birth:2004, debut:2022, members:6 },
-
 { name:"MASHIRO", group:"MADEIN", nationality:"日本", birth:1999, debut:2024, members:4 },
 { name:"MiU", group:"MADEIN", nationality:"日本", birth:2003, debut:2024, members:4 },
 { name:"SERINA", group:"MADEIN", nationality:"日本", birth:2006, debut:2024, members:4 },
 { name:"NAGOMI", group:"MADEIN", nationality:"日本", birth:2007, debut:2024, members:4 },
-
 { name:"Seoi", group:"H1-KEY", nationality:"南韓", birth:2000, debut:2022, members:4 },
 { name:"Riina", group:"H1-KEY", nationality:"南韓", birth:2001, debut:2022, members:4 },
 { name:"Hwiseo", group:"H1-KEY", nationality:"南韓", birth:2002, debut:2022, members:4 },
 { name:"Yel", group:"H1-KEY", nationality:"南韓", birth:2004, debut:2022, members:4 },
-
 { name:"Eunha", group:"VIVIZ", nationality:"南韓", birth:1997, debut:2022, members:3 },
 { name:"SinB", group:"VIVIZ", nationality:"南韓", birth:1998, debut:2022, members:3 },
 { name:"Umji", group:"VIVIZ", nationality:"南韓", birth:1998, debut:2022, members:3 },
-    
 { name:"SANGAH", group:"LIGHTSUM", nationality:"南韓", birth:2002, debut:2021, members:6 },
 { name:"CHOWON", group:"LIGHTSUM", nationality:"南韓", birth:2002, debut:2021, members:6 },
 { name:"NAYOUNG", group:"LIGHTSUM", nationality:"南韓", birth:2002, debut:2021, members:6 },
 { name:"HINA", group:"LIGHTSUM", nationality:"日本", birth:2003, debut:2021, members:6 },
 { name:"JUHYEON", group:"LIGHTSUM", nationality:"南韓", birth:2004, debut:2021, members:6 },
 { name:"YUJEONG", group:"LIGHTSUM", nationality:"南韓", birth:2004, debut:2021, members:6 },
-
 { name:"HITOMI", group:"SAY MY NAME", nationality:"日本", birth:2001, debut:2024, members:8 },
 { name:"SHUIE", group:"SAY MY NAME", nationality:"中國", birth:2004, debut:2024, members:8 },
 { name:"MEI", group:"SAY MY NAME", nationality:"日本", birth:2005, debut:2024, members:8 },
@@ -324,7 +446,6 @@ const idols = [
 { name:"DOHEE", group:"SAY MY NAME", nationality:"南韓", birth:2006, debut:2024, members:8 },
 { name:"JUNHWI", group:"SAY MY NAME", nationality:"南韓", birth:2007, debut:2024, members:8 },
 { name:"SEUNGJOO", group:"SAY MY NAME", nationality:"南韓", birth:2010, debut:2024, members:8 },
-
 { name:"Ruka", group:"BABYMONSTER", nationality:"日本", birth:2002, debut:2024, members:7 },
 { name:"Pharita", group:"BABYMONSTER", nationality:"泰國", birth:2005, debut:2024, members:7 },
 { name:"Asa", group:"BABYMONSTER", nationality:"日本", birth:2006, debut:2024, members:7 },
@@ -332,33 +453,28 @@ const idols = [
 { name:"Rami", group:"BABYMONSTER", nationality:"南韓", birth:2007, debut:2024, members:7 },
 { name:"Rora", group:"BABYMONSTER", nationality:"南韓", birth:2008, debut:2024, members:7 },
 { name:"Chiquita", group:"BABYMONSTER", nationality:"泰國", birth:2009, debut:2024, members:7 },
-
 { name:"Won Hwayeon", group:"ifeye", nationality:"南韓", birth:2006, debut:2025, members:6 },
 { name:"Taerin", group:"ifeye", nationality:"南韓", birth:2006, debut:2025, members:6 },
 { name:"Rahee", group:"ifeye", nationality:"南韓", birth:2007, debut:2025, members:6 },
 { name:"Kasia", group:"ifeye", nationality:"南韓", birth:2008, debut:2025, members:6 },
 { name:"Meu", group:"ifeye", nationality:"南韓", birth:2008, debut:2025, members:6 },
 { name:"Sasha", group:"ifeye", nationality:"南韓", birth:2009, debut:2025, members:6 },
-
 { name:"MAIKA", group:"ODD YOUTH", nationality:"日本", birth:2005, debut:2024, members:5 },
 { name:"MYAH", group:"ODD YOUTH", nationality:"南韓/美國", birth:2006, debut:2024, members:5 },
 { name:"KANIE", group:"ODD YOUTH", nationality:"南韓", birth:20077, debut:2024, members:5 },
 { name:"SUMMER", group:"ODD YOUTH", nationality:"南韓", birth:20077, debut:2024, members:5 },
 { name:"YE EUM", group:"ODD YOUTH", nationality:"南韓", birth:2007, debut:2024, members:5 },
-
 { name:"JinSoul", group:"ARTMS", nationality:"南韓", birth:1997, debut:2024, members:5 },
 { name:"HaSeul", group:"ARTMS", nationality:"南韓", birth:1997, debut:2024, members:5 },
 { name:"Kim Lip", group:"ARTMS", nationality:"南韓", birth:1999, debut:2024, members:5 },
 { name:"HeeJin", group:"ARTMS", nationality:"南韓", birth:2000, debut:2024, members:5 },
 { name:"Choerry", group:"ARTMS", nationality:"南韓", birth:2001, debut:2024, members:5 },
-    
 { name:"Hyojung", group:"OH MY GIRL", nationality:"南韓", birth:1994, debut:2015, members:6 },
 { name:"Mimi", group:"OH MY GIRL", nationality:"南韓", birth:1995, debut:2015, members:6 },
 { name:"YooA", group:"OH MY GIRL", nationality:"南韓", birth:1995, debut:2015, members:6 },
 { name:"Seunghee", group:"OH MY GIRL", nationality:"南韓", birth:1996, debut:2015, members:6 },
 { name:"Yubin", group:"OH MY GIRL", nationality:"南韓", birth:1997, debut:2015, members:6 },
 { name:"Arin", group:"OH MY GIRL", nationality:"南韓", birth:1999, debut:2015, members:6 },
-
 { name:"SeolA", group:"WJSN", nationality:"南韓", birth:1994, debut:2016, members:10 },
 { name:"BoNa", group:"WJSN", nationality:"南韓", birth:1995, debut:2016, members:10 },
 { name:"Exy", group:"WJSN", nationality:"南韓", birth:1995, debut:2016, members:10 },
@@ -369,19 +485,16 @@ const idols = [
 { name:"YeoReum", group:"WJSN", nationality:"南韓", birth:1999, debut:2016, members:10 },
 { name:"DaYoung", group:"WJSN", nationality:"南韓", birth:1999, debut:2016, members:10 },
 { name:"YeonJung", group:"WJSN", nationality:"南韓", birth:1999, debut:2016, members:10 },
-
 { name:"Park Cho Rong", group:"Apink", nationality:"南韓", birth:1991, debut:2011, members:5 },
 { name:"Yoon Bo Mi", group:"Apink", nationality:"南韓", birth:1993, debut:2011, members:5 },
 { name:"Jeong Eun Ji", group:"Apink", nationality:"南韓", birth:1993, debut:2011, members:5 },
 { name:"Kim Nam Joo", group:"Apink", nationality:"南韓", birth:1995, debut:2011, members:5 },
 { name:"Oh Ha Young", group:"Apink", nationality:"南韓", birth:1996, debut:2011, members:5 },
-
 { name:"Irene", group:"Red Velvet", nationality:"南韓", birth:1991, debut:2014, members:5 },
 { name:"Seulgi", group:"Red Velvet", nationality:"南韓", birth:1994, debut:2014, members:5 },
 { name:"Wendy", group:"Red Velvet", nationality:"南韓", birth:1994, debut:2014, members:5 },
 { name:"Joy", group:"Red Velvet", nationality:"南韓", birth:1996, debut:2014, members:5 },
 { name:"Yeri", group:"Red Velvet", nationality:"南韓", birth:1999, debut:2014, members:5 },
-
 { name:"Choi Yena", group:"SOLO", nationality:"南韓", birth:1999, debut:2022, members:1 },
 { name:"Kwon Eunbi", group:"SOLO", nationality:"南韓", birth:1995, debut:2021, members:1 },
 { name:"Lee Chaeyeon", group:"SOLO", nationality:"南韓", birth:2000, debut:2022, members:1 },
@@ -391,12 +504,15 @@ const idols = [
 
 let answer = {}, gameOver = false, guessCount = 0, currentMax = 10;
 let guessedSet = new Set();
+let timerInterval = null;
+let timeLeft = 0;
+let currentDifficulty = 10;
 
 const guessInput = document.getElementById('guessInput');
 const suggestions = document.getElementById('suggestions');
 const gameBody = document.getElementById('gameBody');
 const result = document.getElementById('result');
-const remaining = document.getElementById('remaining');
+const timerDisplay = document.getElementById('timer');
 
 // 國籍比對
 function getNationalityClass(guessed, correct) {
@@ -406,28 +522,103 @@ function getNationalityClass(guessed, correct) {
     return g.some(gg => c.includes(gg)) || c.some(cc => g.includes(cc)) ? 'close' : 'wrong';
 }
 
-// ================== 新遊戲 ==================
+// ================== 遊戲設定 ==================
+function selectDifficulty(max) {
+    currentMax = max;
+    currentDifficulty = max;
+    initTableRows();
+}
+
+function initTableRows() {
+    gameBody.innerHTML = "";
+    for (let i = 1; i <= currentMax; i++) {
+        let row = gameBody.insertRow();
+        let cell = row.insertCell();
+        cell.textContent = i;
+        cell.classList.add('count-col');
+        for (let j = 0; j < 6; j++) {
+            row.insertCell();
+        }
+    }
+}
+
+function startGameWithSettings() {
+    if (!gameOver && guessCount > 0 && !confirm("確定要放棄目前遊戲，開始新的一局嗎？")) return;
+    const timeSelect = parseInt(document.getElementById('timeLimit').value);
+    startNewGame(currentMax, timeSelect);
+}
+
 function confirmNewGame() {
     if (!gameOver && guessCount > 0 && !confirm("確定要放棄目前遊戲，開始新的一局嗎？")) return;
-    startNewGame(currentMax);
+    const timeSelect = parseInt(document.getElementById('timeLimit').value);
+    startNewGame(currentMax, timeSelect);
 }
 
-function selectDifficulty(max) {
-    if (!gameOver && guessCount > 0 && !confirm(`確定切換到 ${max} 次難度並開始新遊戲嗎？`)) return;
-    startNewGame(max);
-}
-
-function startNewGame(max) {
+function startNewGame(max, timeLimit) {
     currentMax = max;
     answer = idols[Math.floor(Math.random() * idols.length)];
     gameOver = false;
     guessCount = 0;
     guessedSet.clear();
-    gameBody.innerHTML = "";
     result.innerHTML = "";
     guessInput.value = "";
     suggestions.innerHTML = "";
-    updateRemaining();
+    
+    updateTimerDisplay(timeLimit);
+    
+    if (timerInterval) clearInterval(timerInterval);
+    timeLeft = timeLimit;
+
+    initTableRows();
+    
+    if (timeLimit > 0) startTimer(timeLimit);
+}
+
+function updateTimerDisplay(seconds) {
+    timerDisplay.textContent = seconds > 0 
+        ? `本次回答剩餘時間：${seconds} 秒` 
+        : `本次回答剩餘時間：不計時`;
+}
+
+function startTimer(seconds) {
+    timeLeft = seconds;
+    if (timerInterval) clearInterval(timerInterval);
+    
+    timerInterval = setInterval(() => {
+        timeLeft--;
+        timerDisplay.textContent = `本次回答剩餘時間：${timeLeft} 秒`;
+        if (timeLeft <= 0) {
+            clearInterval(timerInterval);
+            if (!gameOver) skipCurrentGuess();
+        }
+    }, 1000);
+}
+
+function skipCurrentGuess() {
+    if (guessCount >= currentMax) return;
+    guessCount++;
+    markRowAsTimeout(guessCount);
+    
+    if (guessCount >= currentMax) {
+        result.innerHTML = `😢 遊戲結束！正確答案是 <b>${answer.name} (${answer.group})</b>`;
+        gameOver = true;
+        timerDisplay.textContent = `本次回答剩餘時間：結束`;
+        return;
+    }
+    
+    const timeSelect = parseInt(document.getElementById('timeLimit').value);
+    if (timeSelect > 0) startTimer(timeSelect);
+}
+
+function markRowAsTimeout(rowNum) {
+    const rows = gameBody.rows;
+    if (rowNum > 0 && rowNum <= rows.length) {
+        const row = rows[rowNum - 1];
+        row.cells[1].textContent = "已超時";
+        row.cells[1].colSpan = 6;
+        row.cells[1].classList.add('timeout');
+        for (let i = 2; i < row.cells.length; i++) row.deleteCell(2);
+    }
 }
 
 // ================== 猜測功能 ==================
@@ -435,12 +626,10 @@ function showSuggestions() {
     let input = guessInput.value.toLowerCase().trim();
     suggestions.innerHTML = "";
     if (!input || gameOver) return;
-
-    let filtered = idols.filter(i => 
+    let filtered = idols.filter(i =>
         !guessedSet.has(i.name + i.group) &&
         (i.name.toLowerCase().includes(input) || i.group.toLowerCase().includes(input))
     ).slice(0, 8);
-
     filtered.forEach(i => {
         let d = document.createElement("div");
         d.textContent = `${i.name} (${i.group})`;
@@ -453,64 +642,68 @@ function guess() {
     if (gameOver) return;
     const input = guessInput.value.trim();
     if (!input) return;
-
     const idol = idols.find(i => `${i.name} (${i.group})`.toLowerCase() === input.toLowerCase());
     if (!idol) { alert("找不到這個偶像！"); return; }
-
+    
     let key = idol.name + idol.group;
     if (guessedSet.has(key)) return;
-
+    
     guessedSet.add(key);
     guessCount++;
-    addRow(idol);
-    updateRemaining();
-
+    
+    if (timerInterval) clearInterval(timerInterval);
+    
+    fillRow(guessCount, idol);
+    
     if (idol.name === answer.name && idol.group === answer.group) {
         result.innerHTML = `🎉 恭喜猜對！答案是 <b>${answer.name} (${answer.group})</b>`;
         gameOver = true;
+        timerDisplay.textContent = `本次回答剩餘時間：完成！`;
         return;
     }
+    
     if (guessCount >= currentMax) {
         result.innerHTML = `😢 遊戲結束！正確答案是 <b>${answer.name} (${answer.group})</b>`;
         gameOver = true;
+        timerDisplay.textContent = `本次回答剩餘時間：結束`;
         return;
     }
-
+    
     guessInput.value = "";
     suggestions.innerHTML = "";
+    
+    const timeSelect = parseInt(document.getElementById('timeLimit').value);
+    if (timeSelect > 0) startTimer(timeSelect);
 }
 
-function addRow(idol) {
-    let row = gameBody.insertRow(0);
-    let cell;
-
-    cell = row.insertCell(); cell.textContent = idol.name;
-    cell.classList.add(idol.name === answer.name ? 'correct' : 'wrong');
-
-    cell = row.insertCell(); cell.textContent = idol.group;
-    cell.classList.add(idol.group === answer.group ? 'correct' : 'wrong');
-
-    cell = row.insertCell(); cell.textContent = idol.nationality;
-    cell.classList.add(getNationalityClass(idol.nationality, answer.nationality));
-
-    cell = row.insertCell(); cell.textContent = idol.birth;
-    if (idol.birth === answer.birth) cell.classList.add('correct');
-    else if (Math.abs(idol.birth - answer.birth) <= 1) cell.classList.add('close');
-    else cell.classList.add('wrong');
-
-    cell = row.insertCell(); cell.textContent = idol.debut;
-    if (idol.debut === answer.debut) cell.classList.add('correct');
-    else if (Math.abs(idol.debut - answer.debut) <= 1) cell.classList.add('close');
-    else cell.classList.add('wrong');
-
-    cell = row.insertCell(); cell.textContent = idol.members;
-    if (idol.members === answer.members) cell.classList.add('correct');
-    else if (Math.abs(idol.members - answer.members) <= 1) cell.classList.add('close');
-    else cell.classList.add('wrong');
-}
-
-function updateRemaining() {
-    remaining.innerText = `剩餘猜測次數：${currentMax - guessCount} / ${currentMax}`;
+function fillRow(rowNum, idol) {
+    const rows = gameBody.rows;
+    if (rowNum > 0 && rowNum <= rows.length) {
+        const row = rows[rowNum - 1];
+        row.cells[1].textContent = idol.name;
+        row.cells[1].classList.add(idol.name === answer.name ? 'correct' : 'wrong');
+        
+        row.cells[2].textContent = idol.group;
+        row.cells[2].classList.add(idol.group === answer.group ? 'correct' : 'wrong');
+        
+        row.cells[3].textContent = idol.nationality;
+        row.cells[3].classList.add(getNationalityClass(idol.nationality, answer.nationality));
+        
+        row.cells[4].textContent = idol.birth;
+        if (idol.birth === answer.birth) row.cells[4].classList.add('correct');
+        else if (Math.abs(idol.birth - answer.birth) <= 1) row.cells[4].classList.add('close');
+        else row.cells[4].classList.add('wrong');
+        
+        row.cells[5].textContent = idol.debut;
+        if (idol.debut === answer.debut) row.cells[5].classList.add('correct');
+        else if (Math.abs(idol.debut - answer.debut) <= 1) row.cells[5].classList.add('close');
+        else row.cells[5].classList.add('wrong');
+        
+        row.cells[6].textContent = idol.members;
+        if (idol.members === answer.members) row.cells[6].classList.add('correct');
+        else if (Math.abs(idol.members - answer.members) <= 1) row.cells[6].classList.add('close');
+        else row.cells[6].classList.add('wrong');
+    }
 }
 
 // ================== 題庫 ==================
@@ -519,6 +712,7 @@ function showDatabase() {
     updateSearchOptions();
     renderDatabase();
 }
+
 function closeDatabase() {
     document.getElementById('databaseModal').style.display = "none";
 }
@@ -527,18 +721,13 @@ function updateSearchOptions() {
     const type = document.getElementById('mainFilter').value;
     const datalist = document.getElementById('searchList');
     datalist.innerHTML = "";
-
     if (type === "all") return;
-
     let values = [...new Set(idols.map(i => i[type]))];
-
-    // 正確數字排序（成員數、出生年、出道年）
     if (type === "members" || type === "birth" || type === "debut") {
         values.sort((a, b) => Number(a) - Number(b));
     } else {
         values.sort((a, b) => String(a).localeCompare(String(b)));
     }
-
     values.forEach(v => {
         let opt = document.createElement("option");
         opt.value = v;
@@ -553,19 +742,9 @@ function renderDatabase() {
     const keyword = document.getElementById('searchInput').value.trim().toLowerCase();
 
     let filtered = idols;
-
     if (type !== "all" && keyword) {
-        filtered = idols.filter(i => 
-            String(i[type]).toLowerCase().includes(keyword)
-        );
+        filtered = idols.filter(i => String(i[type]).toLowerCase().includes(keyword));
     }
-
-    filtered.sort((a, b) => {
-        if (type === "members" || type === "birth" || type === "debut") {
-            return Number(a[type]) - Number(b[type]);
-        }
-        return a.name.localeCompare(b.name);
-    });
 
     filtered.forEach(i => {
         let r = tbody.insertRow();
@@ -578,10 +757,28 @@ function renderDatabase() {
     });
 }
 
+function showRules() {
+    alert(`🎤 KPOP Wordle 遊戲規則
+
+1. 先選擇難度與每題作答時間，再按「開始遊戲」
+2. 時間到會自動標記「已超時」，並跳過該次機會
+3. 綠色=正確，黃色=接近，灰色=錯誤
+  ╰接近的判定
+    國籍：國籍其中1個正確
+    出生年、出道年、成員數：正負1之內
+4. 題庫皆為現役藝人，遊玩前可先查看題庫
+5. 如果程式有錯誤或是有建議，可以透過YouTube和Threads和我聊聊
+
+祝你玩得愉快！
+}
+
 // Enter 送出
 guessInput.addEventListener('keypress', e => { if (e.key === 'Enter') guess(); });
 
-window.onload = () => startNewGame(10);
+window.onload = () => {
+    currentMax = 6;
+    initTableRows();
+};
 </script>
 </body>
 </html>
