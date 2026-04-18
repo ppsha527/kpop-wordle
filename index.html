@@ -3,60 +3,122 @@
 <head>
 <meta charset="UTF-8">
 <title>KPOP Guess Game</title>
+
 <style>
-body { font-family: Arial; background:#121213; color:white; text-align:center; margin:0; padding:0;}
-input { padding:10px; font-size:14px; border-radius:6px; border:none; margin:4px; }
-
-#suggestions { 
-    max-height:220px; overflow-y:auto; margin:8px auto; 
-    text-align:left; width:340px; background:#1f1f21; 
-    border-radius:8px; border:1px solid #333;
+body {
+  font-family: "Segoe UI", Arial;
+  background:#0f1115;
+  color:white;
+  text-align:center;
+  margin:0;
 }
-#suggestions div { padding:10px; cursor:pointer; border-bottom:1px solid #333;}
-#suggestions div:hover { background:#333; }
 
-.correct { background:#6aaa64; }
-.close { background:#c9b458; }
-.wrong { background:#3a3a3c; }
+h1 { font-size:32px; margin:20px 0; }
 
-table { margin:20px auto; border-collapse:collapse; }
-td, th { border:1px solid #444; padding:8px; }
+input {
+  padding:14px;
+  font-size:18px;
+  border-radius:10px;
+  border:none;
+  margin:6px;
+  width:340px;
+  background:#1c1f26;
+  color:white;
+}
 
-#remaining { font-size:18px; margin:10px; color:#bbb; }
-button { padding:8px 14px; margin:5px; border-radius:6px; border:none; cursor:pointer; }
+#suggestions {
+  max-height:220px;
+  width:360px;
+  margin:10px auto;
+  background:#1c1f26;
+  border-radius:10px;
+  border:1px solid #333;
+  overflow-y:auto;
+}
+#suggestions div {
+  padding:12px;
+  cursor:pointer;
+}
+#suggestions div:hover { background:#2a2f3a; }
+
+button {
+  padding:12px 18px;
+  font-size:16px;
+  border-radius:10px;
+  border:none;
+  cursor:pointer;
+  background:#2a2f3a;
+  color:white;
+}
+button:hover { background:#3a4150; }
 
 #dbBtn {
-    position: fixed; top: 15px; right: 15px;
-    background: #444; color: white;
+  position:fixed;
+  top:15px;
+  right:15px;
+  background:#4a90e2;
 }
 
-#databaseModal {
-    display: none; position: fixed; top: 0; left: 0;
-    width: 100%; height: 100%;
-    background: rgba(0,0,0,0.85);
-    justify-content: center; align-items: center;
+table {
+  margin:25px auto;
+  border-collapse:separate;
+  border-spacing:0;
+  font-size:16px;
+  background:#1c1f26;
+  border-radius:12px;
+  overflow:hidden;
 }
+
+th {
+  background:#2a2f3a;
+  padding:12px;
+  cursor:pointer;
+}
+th:hover { background:#3a4150; }
+
+td {
+  padding:12px;
+  border-top:1px solid #333;
+}
+
+.correct { background:#4caf50; }
+.close { background:#c9a227; }
+.wrong { background:#2a2f3a; }
+
+#remaining { font-size:20px; margin:10px; color:#bbb; }
+
+#databaseModal {
+  display:none;
+  position:fixed;
+  top:0; left:0;
+  width:100%; height:100%;
+  background:rgba(0,0,0,0.8);
+  justify-content:center;
+  align-items:center;
+}
+
 #modalContent {
-    background: #1f1f21;
-    width: 95%; max-width: 900px;
-    max-height: 90vh;
-    overflow-y: auto;
-    border-radius: 10px;
-    padding: 20px;
+  background:#181b22;
+  width:95%;
+  max-width:1000px;
+  max-height:90vh;
+  overflow-y:auto;
+  border-radius:14px;
+  padding:20px;
+}
+
+#modalContent input {
+  width:150px;
+  font-size:14px;
 }
 </style>
 </head>
+
 <body>
 
 <h1>🎤 KPOP Guess Game</h1>
 
 <button id="dbBtn" onclick="showDatabase()">📋 題庫</button>
-
-<div id="difficulty">
-    <button onclick="startNewGame(10)">簡單</button>
-    <button onclick="startNewGame(8)">中等</button>
-    <button onclick="startNewGame(6)">困難</button>
-</div>
 
 <input id="guessInput" placeholder="輸入偶像 (Wonyoung (IVE))" oninput="showSuggestions()">
 <div id="suggestions"></div>
@@ -91,12 +153,12 @@ button { padding:8px 14px; margin:5px; border-radius:6px; border:none; cursor:po
 <table style="width:100%; margin-top:10px;">
 <thead>
 <tr>
-<th>Name</th>
-<th>Group</th>
-<th>Nationality</th>
-<th>Birth</th>
-<th>Debut</th>
-<th>Members</th>
+<th onclick="sortDB('name')">Name</th>
+<th onclick="sortDB('group')">Group</th>
+<th onclick="sortDB('nationality')">Nationality</th>
+<th onclick="sortDB('birth')">Birth</th>
+<th onclick="sortDB('debut')">Debut</th>
+<th onclick="sortDB('members')">Members</th>
 </tr>
 </thead>
 <tbody id="dbBody"></tbody>
@@ -109,7 +171,7 @@ button { padding:8px 14px; margin:5px; border-radius:6px; border:none; cursor:po
 
 <script>
 
-// ===== 資料 =====
+// ===== 資料（你可以換回完整版）=====
 const idols = [
 { name:"Wonyoung", group:"IVE", nationality:"南韓", birth:2004, debut:2021, members:6 },
 { name:"Yujin", group:"IVE", nationality:"南韓", birth:2003, debut:2021, members:6 },
@@ -330,74 +392,9 @@ const idols = [
 { name:"GYUBIN", group:"SOLO", nationality:"南韓", birth:2006, debut:2024, members:1 }
 ];
 
-// ===== 遊戲 =====
-let answer={}, gameOver=false, guessCount=0, currentMax=10;
-
-function startNewGame(max){
-    currentMax=max;
-    answer=idols[Math.floor(Math.random()*idols.length)];
-    gameOver=false; guessCount=0;
-    document.getElementById("gameBody").innerHTML="";
-    document.getElementById("result").innerHTML="";
-    updateRemaining();
-}
-
-function showSuggestions(){
-    const val=document.getElementById("guessInput").value.toLowerCase();
-    const box=document.getElementById("suggestions");
-    box.innerHTML="";
-    if(!val)return;
-
-    idols.filter(i=>i.name.toLowerCase().includes(val)||i.group.toLowerCase().includes(val))
-    .forEach(i=>{
-        const d=document.createElement("div");
-        d.innerText=`${i.name} (${i.group})`;
-        d.onclick=()=>{document.getElementById("guessInput").value=d.innerText; guess();}
-        box.appendChild(d);
-    });
-}
-
-function findIdol(input){
-    const m=input.match(/^(.*?)\((.*?)\)$/);
-    if(!m)return;
-    return idols.find(i=>i.name===m[1].trim()&&i.group===m[2].trim());
-}
-
-function compare(a,b){
-    if(a===b)return"correct";
-    if(Math.abs(a-b)<=1)return"close";
-    return"wrong";
-}
-
-function addRow(i){
-    const r=document.getElementById("gameBody").insertRow();
-    r.insertCell().textContent=i.name;
-    r.insertCell().textContent=i.group;
-    r.insertCell().textContent=i.nationality;
-    r.insertCell().textContent=i.birth;
-    r.insertCell().textContent=i.debut;
-    r.insertCell().textContent=i.members;
-}
-
-function updateRemaining(){
-    document.getElementById("remaining").innerText="剩餘："+(currentMax-guessCount);
-}
-
-function guess(){
-    if(gameOver)return;
-    const input=document.getElementById("guessInput").value;
-    const i=findIdol(input);
-    if(!i)return alert("錯誤");
-
-    guessCount++;
-    addRow(i);
-    updateRemaining();
-
-    if(i.name===answer.name){
-        document.getElementById("result").innerHTML="🎉 正確："+answer.name;
-        gameOver=true;
-    }
-}
+// ===== 排序狀態 =====
+let sortKey = "";
+let sortAsc = true;
 
 // ===== 題庫 =====
 function showDatabase(){
@@ -410,23 +407,47 @@ function closeDatabase(){
     document.getElementById("databaseModal").style.display="none";
 }
 
+function sortDB(key){
+    if(sortKey === key){
+        sortAsc = !sortAsc;
+    }else{
+        sortKey = key;
+        sortAsc = true;
+    }
+    renderDatabase();
+}
+
 function renderDatabase(){
     const body=document.getElementById("dbBody");
     body.innerHTML="";
 
+    let data = [...idols];
+
+    // 篩選
     const g=document.getElementById("fGroup").value.toLowerCase();
     const n=document.getElementById("fNat").value.toLowerCase();
     const b=document.getElementById("fBirth").value;
     const d=document.getElementById("fDebut").value;
     const m=document.getElementById("fMembers").value;
 
-    idols.filter(i=>
+    data = data.filter(i=>
         (!g||i.group.toLowerCase().includes(g)) &&
         (!n||i.nationality.toLowerCase().includes(n)) &&
         (!b||i.birth==b) &&
         (!d||i.debut==d) &&
         (!m||i.members==m)
-    ).forEach(i=>{
+    );
+
+    // ⭐ 排序
+    if(sortKey){
+        data.sort((a,b)=>{
+            if(a[sortKey] < b[sortKey]) return sortAsc ? -1 : 1;
+            if(a[sortKey] > b[sortKey]) return sortAsc ? 1 : -1;
+            return 0;
+        });
+    }
+
+    data.forEach(i=>{
         const r=body.insertRow();
         r.insertCell().textContent=i.name;
         r.insertCell().textContent=i.group;
@@ -437,13 +458,7 @@ function renderDatabase(){
     });
 }
 
-// Enter
-document.getElementById("guessInput").addEventListener("keypress",e=>{
-    if(e.key==="Enter")guess();
-});
-
-startNewGame(10);
-
 </script>
+
 </body>
 </html>
