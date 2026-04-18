@@ -20,7 +20,6 @@
         font-size: 2.5em;
         text-shadow: 0 0 15px rgba(255, 20, 147, 0.5);
     }
-
     #dbBtn {
         position: fixed; top: 15px; right: 15px;
         background: #333; color: white; padding: 10px 16px;
@@ -35,12 +34,11 @@
         font-size: 15px;
         z-index: 100;
     }
-
-    .input-area { 
-        margin: 15px auto; 
-        max-width: 420px; 
+    .input-area {
+        margin: 15px auto;
+        max-width: 420px;
         width: 100%;
-        position: relative;           /* 關鍵：讓建議框絕對定位 */
+        position: relative;
     }
     input {
         padding: 16px 20px;
@@ -53,34 +51,31 @@
         box-shadow: 0 4px 15px rgba(0,0,0,0.3);
     }
     input:focus { box-shadow: 0 0 0 3px rgba(255, 20, 147, 0.4); }
-
     #suggestions {
         position: absolute;
         left: 50%;
         transform: translateX(-50%);
         top: 100%;
-        max-height: 260px; 
-        overflow-y: auto; 
+        max-height: 260px;
+        overflow-y: auto;
         margin: 4px 0 0 0;
-        text-align: left; 
-        width: 100%; 
+        text-align: left;
+        width: 100%;
         max-width: 420px;
-        background: #1f1f25; 
+        background: #1f1f25;
         border-radius: 12px;
-        border: 1px solid #444; 
+        border: 1px solid #444;
         box-shadow: 0 6px 20px rgba(0,0,0,0.4);
         z-index: 10;
     }
     #suggestions div { padding: 14px 18px; cursor: pointer; border-bottom: 1px solid #333; }
     #suggestions div:hover { background: #333; }
-
     button {
         padding: 12px 20px; margin: 8px 4px; font-size: 16px;
         border-radius: 10px; border: none; cursor: pointer;
         background: #333; color: white;
     }
     button:hover { background: #555; transform: translateY(-2px); }
-
     #gameSetup {
         margin: 15px auto;
         max-width: 580px;
@@ -92,7 +87,6 @@
         align-items: center;
         gap: 18px;
     }
-
     #timeLimit {
         padding: 12px 16px;
         font-size: 18px;
@@ -102,14 +96,12 @@
         border-radius: 10px;
         min-width: 160px;
     }
-
     #timer {
         font-size: 24px;
         font-weight: bold;
         color: #ffeb3b;
         margin: 8px 0 12px 0;
     }
-
     table {
         margin: 10px auto 40px auto;
         border-collapse: collapse;
@@ -122,30 +114,27 @@
         max-width: 1250px;
         table-layout: fixed;
     }
-    th, td { 
-        padding: 14px 10px; 
+    th, td {
+        padding: 14px 10px;
         border: none;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
     }
-    th { 
-        background: #25252b; 
+    th {
+        background: #25252b;
         font-size: 16px;
         border-bottom: 2px solid #444;
     }
     .count-col { width: 65px; text-align: center; font-weight: bold; }
-
     .correct { background: #6aaa64 !important; color: white; }
     .close { background: #c9b458 !important; color: black; }
     .wrong { background: #3a3a3c !important; }
     .timeout { background: #555 !important; color: #aaa; }
-
-    #result { 
-        min-height: 60px; 
-        margin: 10px 0 20px 0; 
+    #result {
+        min-height: 60px;
+        margin: 10px 0 20px 0;
     }
-
     .footer {
         margin-top: 60px;
         padding: 40px 20px 30px;
@@ -171,15 +160,12 @@
 </head>
 <body>
     <h1>🎤 KPOP Wordle</h1>
-
     <button id="dbBtn" onclick="showDatabase()">📋 題庫</button>
     <button id="rulesBtn" onclick="showRules()">📜 遊戲規則</button>
 
-    <!-- 遊戲設定 - 三排布局 -->
     <div id="gameSetup">
         <h3>遊戲設定</h3>
-        
-        <!-- 第一排：難度 -->
+       
         <div style="display:flex; gap:12px; flex-wrap:wrap; justify-content:center;">
             <div>
                 難度：
@@ -188,8 +174,7 @@
                 <button onclick="selectDifficulty(4)">困難 (4次)</button>
             </div>
         </div>
-        
-        <!-- 第二排：秒數 -->
+       
         <div style="display:flex; gap:15px; align-items:center; flex-wrap:wrap; justify-content:center;">
             <label style="font-size:17px;">每次作答時間：
                 <select id="timeLimit">
@@ -201,31 +186,25 @@
                 </select>
             </label>
         </div>
-        
-        <!-- 第三排：開始遊戲 + 新遊戲 -->
+       
         <div style="display:flex; gap:12px; flex-wrap:wrap; justify-content:center;">
-            <button onclick="startGameWithSettings()" 
-                    style="background:#e91e63; font-size:16px; padding:12px 28px;">
+            <button onclick="startGameWithSettings()" style="background:#e91e63; font-size:16px; padding:12px 28px;">
                 ▶️ 開始遊戲
             </button>
-            
-            <button onclick="confirmNewGame()" 
-                    style="background:#333; font-size:16px; padding:12px 24px;">
+            <button onclick="confirmNewGame()" style="background:#333; font-size:16px; padding:12px 24px;">
                 🔄 新遊戲
             </button>
         </div>
     </div>
 
     <div id="timer">本次回答剩餘時間：不計時</div>
-
+    
     <div class="input-area">
-        <input id="guessInput" placeholder="輸入偶像名字"
-               autocomplete="off" oninput="showSuggestions()">
+        <input id="guessInput" placeholder="輸入偶像名字" autocomplete="off" oninput="showSuggestions()">
         <div id="suggestions"></div>
     </div>
-    
+   
     <h2 id="result"></h2>
-
     <table>
         <thead>
             <tr>
@@ -241,7 +220,7 @@
         <div style="background:#1f1f21;width:90%;max-width:1200px;max-height:90vh;overflow:auto;border-radius:16px;padding:25px;position:relative;">
             <button onclick="closeDatabase()" style="position:absolute;top:15px;right:15px;background:#c44;padding:8px 16px;">✕</button>
             <h2>📋 完整題庫</h2>
-           
+          
             <div style="margin:20px 0; display:flex; justify-content:center; gap:10px; flex-wrap:wrap;">
                 <select id="mainFilter" onchange="updateSearchOptions()" style="padding:12px 16px;font-size:16px;">
                     <option value="all">全部</option>
@@ -254,7 +233,6 @@
                 <input list="searchList" id="searchInput" placeholder="輸入關鍵字" style="padding:12px 16px;font-size:16px;width:280px;">
                 <button onclick="renderDatabase()" style="padding:12px 24px;">篩選</button>
             </div>
-
             <table style="width:100%;">
                 <thead>
                     <tr><th>名字</th><th>團體</th><th>國籍</th><th>出生年</th><th>出道年</th><th>成員數</th></tr>
@@ -263,27 +241,17 @@
             </table>
         </div>
     </div>
-
     <datalist id="searchList"></datalist>
 
-<!-- 明顯的頁尾社群連結 -->
-<div class="footer">
-    <div class="social-area">
-        <p style="margin-bottom: 25px; font-size: 19px; color: #ddd;">
-            如果喜歡這遊戲，歡迎訂閱追隨支持！
-        </p>
-        
-        <a href="https://www.youtube.com/@kpopcast" target="_blank" 
-           style="margin: 0 25px; font-size: 22px; text-decoration: none; color: #ff4081;">
-            YouTube
-        </a>
-        
-        <a href="https://www.threads.com/@shr1mp_527" target="_blank" 
-           style="margin: 0 25px; font-size: 22px; text-decoration: none; color: #ff4081;">
-            Threads
-        </a>
+    <div class="footer">
+        <div class="social-area">
+            <p style="margin-bottom: 25px; font-size: 19px; color: #ddd;">
+                如果喜歡這遊戲，歡迎訂閱追隨支持！
+            </p>
+            <a href="https://www.youtube.com/@kpopcast" target="_blank" style="margin: 0 25px; font-size: 22px; text-decoration: none; color: #ff4081;">YouTube</a>
+            <a href="https://www.threads.com/@shr1mp_527" target="_blank" style="margin: 0 25px; font-size: 22px; text-decoration: none; color: #ff4081;">Threads</a>
+        </div>
     </div>
-</div>
 
 <script>
 // ================== 資料 ==================
@@ -461,9 +429,16 @@ const idols = [
 { name:"Sasha", group:"ifeye", nationality:"南韓", birth:2009, debut:2025, members:6 },
 { name:"MAIKA", group:"ODD YOUTH", nationality:"日本", birth:2005, debut:2024, members:5 },
 { name:"MYAH", group:"ODD YOUTH", nationality:"南韓/美國", birth:2006, debut:2024, members:5 },
-{ name:"KANIE", group:"ODD YOUTH", nationality:"南韓", birth:20077, debut:2024, members:5 },
-{ name:"SUMMER", group:"ODD YOUTH", nationality:"南韓", birth:20077, debut:2024, members:5 },
+{ name:"KANIE", group:"ODD YOUTH", nationality:"南韓", birth:2007, debut:2024, members:5 },
+{ name:"SUMMER", group:"ODD YOUTH", nationality:"南韓", birth:2007, debut:2024, members:5 },
 { name:"YE EUM", group:"ODD YOUTH", nationality:"南韓", birth:2007, debut:2024, members:5 },
+{ name:"MOON SUA", group:"Billlie", nationality:"南韓", birth:1999, debut:2021, members:7 },
+{ name:"SUHYEON", group:"Billlie", nationality:"南韓", birth:2000, debut:2021, members:7 },
+{ name:"HARAM", group:"Billlie", nationality:"南韓", birth:2001, debut:2021, members:7 },
+{ name:"TSUKI", group:"Billlie", nationality:"南韓", birth:2002, debut:2021, members:7 },
+{ name:"SHEON", group:"Billlie", nationality:"南韓", birth:2003, debut:2021, members:7 },
+{ name:"SIYOON", group:"Billlie", nationality:"南韓", birth:2005, debut:2021, members:7 },
+{ name:"HARUNA", group:"Billlie", nationality:"南韓", birth:2006, debut:2021, members:7 },
 { name:"JinSoul", group:"ARTMS", nationality:"南韓", birth:1997, debut:2024, members:5 },
 { name:"HaSeul", group:"ARTMS", nationality:"南韓", birth:1997, debut:2024, members:5 },
 { name:"Kim Lip", group:"ARTMS", nationality:"南韓", birth:1999, debut:2024, members:5 },
@@ -502,11 +477,11 @@ const idols = [
 { name:"GYUBIN", group:"SOLO", nationality:"南韓", birth:2006, debut:2024, members:1 }
 ];
 
-let answer = {}, gameOver = false, guessCount = 0, currentMax = 10;
+let answer = {}, gameOver = false, guessCount = 0, currentMax = 6;
 let guessedSet = new Set();
 let timerInterval = null;
 let timeLeft = 0;
-let currentDifficulty = 10;
+let currentDifficulty = 6;
 
 const guessInput = document.getElementById('guessInput');
 const suggestions = document.getElementById('suggestions');
@@ -536,6 +511,8 @@ function initTableRows() {
         let cell = row.insertCell();
         cell.textContent = i;
         cell.classList.add('count-col');
+        
+        // 正確建立 6 個資料欄位（名字、團體、國籍、出生年、出道年、成員數）
         for (let j = 0; j < 6; j++) {
             row.insertCell();
         }
@@ -563,27 +540,26 @@ function startNewGame(max, timeLimit) {
     result.innerHTML = "";
     guessInput.value = "";
     suggestions.innerHTML = "";
-    
+   
     updateTimerDisplay(timeLimit);
-    
+   
     if (timerInterval) clearInterval(timerInterval);
     timeLeft = timeLimit;
-
     initTableRows();
-    
+   
     if (timeLimit > 0) startTimer(timeLimit);
 }
 
 function updateTimerDisplay(seconds) {
-    timerDisplay.textContent = seconds > 0 
-        ? `本次回答剩餘時間：${seconds} 秒` 
+    timerDisplay.textContent = seconds > 0
+        ? `本次回答剩餘時間：${seconds} 秒`
         : `本次回答剩餘時間：不計時`;
 }
 
 function startTimer(seconds) {
     timeLeft = seconds;
     if (timerInterval) clearInterval(timerInterval);
-    
+   
     timerInterval = setInterval(() => {
         timeLeft--;
         timerDisplay.textContent = `本次回答剩餘時間：${timeLeft} 秒`;
@@ -598,14 +574,14 @@ function skipCurrentGuess() {
     if (guessCount >= currentMax) return;
     guessCount++;
     markRowAsTimeout(guessCount);
-    
+   
     if (guessCount >= currentMax) {
         result.innerHTML = `😢 遊戲結束！正確答案是 <b>${answer.name} (${answer.group})</b>`;
         gameOver = true;
         timerDisplay.textContent = `本次回答剩餘時間：結束`;
         return;
     }
-    
+   
     const timeSelect = parseInt(document.getElementById('timeLimit').value);
     if (timeSelect > 0) startTimer(timeSelect);
 }
@@ -615,9 +591,13 @@ function markRowAsTimeout(rowNum) {
     if (rowNum > 0 && rowNum <= rows.length) {
         const row = rows[rowNum - 1];
         row.cells[1].textContent = "已超時";
-        row.cells[1].colSpan = 6;
+        row.cells[1].colSpan = 6;   // 修正為 6
         row.cells[1].classList.add('timeout');
-        for (let i = 2; i < row.cells.length; i++) row.deleteCell(2);
+        
+        // 刪除後面多餘的格子
+        for (let i = row.cells.length - 1; i >= 2; i--) {
+            row.deleteCell(i);
+        }
     }
 }
 
@@ -626,52 +606,62 @@ function showSuggestions() {
     let input = guessInput.value.toLowerCase().trim();
     suggestions.innerHTML = "";
     if (!input || gameOver) return;
+    
     let filtered = idols.filter(i =>
         !guessedSet.has(i.name + i.group) &&
         (i.name.toLowerCase().includes(input) || i.group.toLowerCase().includes(input))
     ).slice(0, 8);
+
     filtered.forEach(i => {
         let d = document.createElement("div");
         d.textContent = `${i.name} (${i.group})`;
-        d.onclick = () => { guessInput.value = `${i.name} (${i.group})`; guess(); };
+        d.onclick = () => { 
+            guessInput.value = `${i.name} (${i.group})`; 
+            guess(); 
+        };
         suggestions.appendChild(d);
     });
 }
 
 function guess() {
-    if (gameOver) return;
+    if (gameOver || guessCount >= currentMax) return;
+    
     const input = guessInput.value.trim();
     if (!input) return;
+
     const idol = idols.find(i => `${i.name} (${i.group})`.toLowerCase() === input.toLowerCase());
-    if (!idol) { alert("找不到這個偶像！"); return; }
-    
+    if (!idol) {
+        alert("找不到這個偶像！");
+        return;
+    }
+   
     let key = idol.name + idol.group;
     if (guessedSet.has(key)) return;
-    
+   
     guessedSet.add(key);
     guessCount++;
-    
+   
     if (timerInterval) clearInterval(timerInterval);
-    
+   
     fillRow(guessCount, idol);
-    
+   
     if (idol.name === answer.name && idol.group === answer.group) {
         result.innerHTML = `🎉 恭喜猜對！答案是 <b>${answer.name} (${answer.group})</b>`;
         gameOver = true;
         timerDisplay.textContent = `本次回答剩餘時間：完成！`;
         return;
     }
-    
+   
     if (guessCount >= currentMax) {
         result.innerHTML = `😢 遊戲結束！正確答案是 <b>${answer.name} (${answer.group})</b>`;
         gameOver = true;
         timerDisplay.textContent = `本次回答剩餘時間：結束`;
         return;
     }
-    
+   
     guessInput.value = "";
     suggestions.innerHTML = "";
-    
+   
     const timeSelect = parseInt(document.getElementById('timeLimit').value);
     if (timeSelect > 0) startTimer(timeSelect);
 }
@@ -680,25 +670,26 @@ function fillRow(rowNum, idol) {
     const rows = gameBody.rows;
     if (rowNum > 0 && rowNum <= rows.length) {
         const row = rows[rowNum - 1];
+        
         row.cells[1].textContent = idol.name;
         row.cells[1].classList.add(idol.name === answer.name ? 'correct' : 'wrong');
-        
+       
         row.cells[2].textContent = idol.group;
         row.cells[2].classList.add(idol.group === answer.group ? 'correct' : 'wrong');
-        
+       
         row.cells[3].textContent = idol.nationality;
         row.cells[3].classList.add(getNationalityClass(idol.nationality, answer.nationality));
-        
+       
         row.cells[4].textContent = idol.birth;
         if (idol.birth === answer.birth) row.cells[4].classList.add('correct');
         else if (Math.abs(idol.birth - answer.birth) <= 1) row.cells[4].classList.add('close');
         else row.cells[4].classList.add('wrong');
-        
+       
         row.cells[5].textContent = idol.debut;
         if (idol.debut === answer.debut) row.cells[5].classList.add('correct');
         else if (Math.abs(idol.debut - answer.debut) <= 1) row.cells[5].classList.add('close');
         else row.cells[5].classList.add('wrong');
-        
+       
         row.cells[6].textContent = idol.members;
         if (idol.members === answer.members) row.cells[6].classList.add('correct');
         else if (Math.abs(idol.members - answer.members) <= 1) row.cells[6].classList.add('close');
@@ -722,12 +713,14 @@ function updateSearchOptions() {
     const datalist = document.getElementById('searchList');
     datalist.innerHTML = "";
     if (type === "all") return;
+    
     let values = [...new Set(idols.map(i => i[type]))];
     if (type === "members" || type === "birth" || type === "debut") {
         values.sort((a, b) => Number(a) - Number(b));
     } else {
         values.sort((a, b) => String(a).localeCompare(String(b)));
     }
+    
     values.forEach(v => {
         let opt = document.createElement("option");
         opt.value = v;
@@ -740,12 +733,12 @@ function renderDatabase() {
     tbody.innerHTML = "";
     const type = document.getElementById('mainFilter').value;
     const keyword = document.getElementById('searchInput').value.trim().toLowerCase();
-
+    
     let filtered = idols;
     if (type !== "all" && keyword) {
         filtered = idols.filter(i => String(i[type]).toLowerCase().includes(keyword));
     }
-
+    
     filtered.forEach(i => {
         let r = tbody.insertRow();
         r.insertCell().textContent = i.name;
@@ -759,23 +752,23 @@ function renderDatabase() {
 
 function showRules() {
     alert(`🎤 KPOP Wordle 遊戲規則
-
 1. 先選擇難度與每題作答時間，再按「開始遊戲」
 2. 時間到會自動標記「已超時」，並跳過該次機會
 3. 綠色=正確，黃色=接近，灰色=錯誤
-   - 國籍：其中一個正確就算接近
-   - 出生年、出道年、成員數：正負1之內算接近
+   接近的判定
+   (1)國籍：多國籍其中1個正確
+   (2)出生年、出道年、成員數：正負1之內
 4. 題庫皆為現役藝人，遊玩前可先查看題庫
-5. 如果程式有錯誤或建議，歡迎透過 YouTube 或 Threads 告訴我
-
+5. 如果還有問題，歡迎透過Threads告訴我
 祝你玩得愉快！`);
 }
 
 // Enter 送出
-guessInput.addEventListener('keypress', e => { if (e.key === 'Enter') guess(); });
+guessInput.addEventListener('keypress', e => { 
+    if (e.key === 'Enter') guess(); 
+});
 
 window.onload = () => {
-    currentMax = 6;
     initTableRows();
 };
 </script>
