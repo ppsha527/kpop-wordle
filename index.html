@@ -15,236 +15,161 @@
         min-height: 100vh;
         box-sizing: border-box;
     }
-    h1 {
-        margin: 15px 0 10px;
-        font-size: 2.2em;
-        text-shadow: 0 0 15px rgba(255, 20, 147, 0.5);
-    }
-    #dbBtn, #rulesBtn {
-        position: fixed; 
-        right: 15px;
-        padding: 10px 16px;
-        border: none; 
-        border-radius: 8px; 
-        cursor: pointer;
-        font-size: 15px;
-        z-index: 100;
-    }
-    #dbBtn { top: 15px; background: #333; color: white; }
-    #rulesBtn { top: 65px; background: #4a90e2; color: white; }
+    h1 { margin: 15px 0 10px; font-size: 2.2em; text-shadow: 0 0 15px rgba(255, 20, 147, 0.5); }
 
-    .input-area {
-        margin: 15px auto;
-        max-width: 420px;
-        width: 100%;
-        position: relative;
+    #updateBtn, #dbBtn, #rulesBtn {
+        position: fixed; padding: 10px 18px; border: none; border-radius: 8px;
+        cursor: pointer; font-size: 15px; z-index: 100; transition: all 0.2s;
     }
+    #updateBtn { top: 15px; left: 15px; background: #9b59b6; color: white; }
+    #dbBtn { top: 15px; right: 15px; background: #333; color: white; }
+    #rulesBtn { top: 65px; right: 15px; background: #4a90e2; color: white; }
+
+    button:hover { transform: translateY(-2px); filter: brightness(1.15); }
+    button:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    .input-area { margin: 20px auto; max-width: 420px; width: 100%; position: relative; }
     input {
-        padding: 16px 20px;
-        font-size: 18px;
-        border-radius: 12px;
-        border: none;
-        width: 100%;
-        background: #25252b;
-        color: white;
+        padding: 16px 20px; font-size: 18px; border-radius: 12px; border: none;
+        width: 100%; background: #25252b; color: white;
         box-shadow: 0 4px 15px rgba(0,0,0,0.3);
     }
-    input:disabled {
-        background: #1a1a1f;
-        color: #888;
-        cursor: not-allowed;
-    }
-    input:focus { box-shadow: 0 0 0 3px rgba(255, 20, 147, 0.4); }
-
-    #suggestions {
-        position: absolute;
-        left: 50%;
-        transform: translateX(-50%);
-        top: 100%;
-        max-height: 260px;
-        overflow-y: auto;
-        margin: 4px 0 0 0;
-        text-align: left;
-        width: 100%;
-        max-width: 420px;
-        background: #1f1f25;
-        border-radius: 12px;
-        border: 1px solid #444;
-        box-shadow: 0 6px 20px rgba(0,0,0,0.4);
-        z-index: 10;
-    }
-    #suggestions div { 
-        padding: 14px 18px; 
-        cursor: pointer; 
-        border-bottom: 1px solid #333; 
-    }
-    #suggestions div:hover { background: #333; }
-
-    button {
-        padding: 12px 20px; 
-        margin: 8px 4px; 
-        font-size: 16px;
-        border-radius: 10px; 
-        border: none; 
-        cursor: pointer;
-        background: #333; 
-        color: white;
-    }
-    button:hover { background: #555; transform: translateY(-2px); }
+    input:focus { box-shadow: 0 0 0 3px rgba(255, 20, 147, 0.4); outline: none; }
 
     #gameSetup {
-        margin: 15px auto;
-        max-width: 580px;
-        background: #1f1f25;
-        padding: 20px;
-        border-radius: 16px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 18px;
+        margin: 20px auto; max-width: 640px; background: #1f1f25;
+        padding: 30px 20px 25px; border-radius: 16px;
+    }
+    #gameSetup h3 { font-size: 1.9em; margin: 0 0 28px 0; text-align: center; }
+
+    .setting-group { margin-bottom: 28px; }
+    .setting-group label { display: block; font-size: 17px; margin-bottom: 10px; text-align: center; }
+
+    .btn-group {
+        display: flex; flex-wrap: wrap; gap: 12px; justify-content: center;
+    }
+    .btn-group button {
+        padding: 12px 20px; font-size: 16px; border-radius: 10px; border: none;
+        background: #333; color: white; cursor: pointer; transition: all 0.2s;
+        min-width: 115px;
+    }
+    .btn-group button.selected {
+        background: #ffffff !important; color: #1a1a1f !important; font-weight: bold;
     }
 
-    #timeLimit {
-        padding: 12px 16px;
-        font-size: 18px;
-        background: #25252b;
-        color: white;
-        border: none;
-        border-radius: 10px;
-    }
+    #timer { font-size: 24px; font-weight: bold; margin: 15px 0; }
+    #result { font-size: 26px; font-weight: bold; min-height: 90px; margin: 20px 0; color: #ffeb3b; }
 
-    #timer {
-        font-size: 22px;
-        font-weight: bold;
-        color: #ffeb3b;
-        margin: 10px 0 15px 0;
+    .table-container { 
+        overflow-x: auto; 
+        margin: 15px auto 40px auto; 
+        max-width: 1100px; 
+        border-radius: 12px; 
+        box-shadow: 0 8px 25px rgba(0,0,0,0.5); 
     }
+    table { border-collapse: collapse; background: #1a1a1f; width: 100%; min-width: 980px; table-layout: fixed; font-size: 15.5px; }
+    th, td { padding: 13px 8px; border: none; }
+    th { background: #25252b; font-size: 14.5px; border-bottom: 2px solid #444; }
 
-    .table-container {
-        overflow-x: auto;
-        margin: 10px auto 40px auto;
-        max-width: 100%;
-        border-radius: 12px;
-        box-shadow: 0 8px 25px rgba(0,0,0,0.5);
-    }
-    table {
-        border-collapse: collapse;
-        background: #1a1a1f;
-        width: 100%;
-        min-width: 950px;
-        table-layout: fixed;
-        font-size: 16px;
-    }
-    th, td {
-        padding: 12px 8px;
-        border: none;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-    }
-    th {
-        background: #25252b;
-        font-size: 15px;
-        border-bottom: 2px solid #444;
-    }
-    .count-col { 
-        width: 55px; 
-        text-align: center; 
-        font-weight: bold; 
-    }
+    .count-col { width: 55px; text-align: center; font-weight: bold; }
+    .name-col { width: 130px; } .group-col { width: 140px; } .debut-col { width: 85px; }
+    .members-col { width: 80px; } .nationality-col { width: 110px; }
+    .birthyear-col { width: 85px; } .birthmonth-col { width: 75px; }
+
     .correct { background: #6aaa64 !important; color: white; }
     .close { background: #c9b458 !important; color: black; }
     .wrong { background: #3a3a3c !important; }
     .timeout { background: #555 !important; color: #aaa; }
 
-    #result {
-        min-height: 85px;
-        margin: 20px 0 25px 0;
-        font-size: 21px;
-        font-weight: bold;
-        line-height: 1.4;
-        color: #ffeb3b;
+    #suggestions {
+        position: absolute; left: 50%; transform: translateX(-50%);
+        top: 100%; max-height: 260px; overflow-y: auto; margin: 4px 0 0 0;
+        text-align: left; width: 100%; max-width: 420px;
+        background: #1f1f25; border-radius: 12px; border: 1px solid #444;
+        box-shadow: 0 6px 20px rgba(0,0,0,0.4); z-index: 10;
     }
-
-    .footer {
-        margin-top: 60px;
-        padding: 40px 20px 30px;
-        border-top: 2px solid #444;
-        background: rgba(31, 31, 37, 0.8);
-        border-radius: 16px;
+    #suggestions div {
+        padding: 14px 18px; cursor: pointer; border-bottom: 1px solid #333;
     }
-
-    @media (max-width: 600px) {
-        h1 { font-size: 1.95em; }
-        button { font-size: 15px; padding: 11px 18px; }
-        input { font-size: 17px; padding: 15px 16px; }
-        table { font-size: 15px; }
-        th, td { padding: 11px 6px; }
-        #gameSetup { padding: 16px; gap: 16px; }
-        .count-col { width: 48px; }
-        #result { font-size: 19px; }
-    }
+    #suggestions div:hover { background: #333; }
 </style>
 </head>
 <body>
     <h1>🎤 KPOP Wordle</h1>
-    <button id="dbBtn" onclick="showDatabase()">📋 題庫</button>
-    <button id="rulesBtn" onclick="showRules()">📜 遊戲規則</button>
+   
+    <button id="updateBtn" onclick="showUpdateInfo()">04/19更新資訊</button>
+    <button id="dbBtn" onclick="showDatabase()">題庫</button>
+    <button id="rulesBtn" onclick="showRules()">遊戲規則</button>
 
     <div id="gameSetup">
         <h3>遊戲設定</h3>
-        <div style="display:flex; gap:12px; flex-wrap:wrap; justify-content:center;">
-            <div>
-                難度：
-                <button onclick="selectDifficulty(8)">簡單 (8次)</button>
-                <button onclick="selectDifficulty(6)">中等 (6次)</button>
-                <button onclick="selectDifficulty(4)">困難 (4次)</button>
+       
+        <div class="setting-group">
+            <label>難度</label>
+            <div class="btn-group">
+                <button onclick="selectDifficulty(8)" id="diff8">簡單 (8次)</button>
+                <button onclick="selectDifficulty(6)" id="diff6">中等 (6次)</button>
+                <button onclick="selectDifficulty(4)" id="diff4">困難 (4次)</button>
             </div>
         </div>
-        
-        <div style="display:flex; gap:15px; align-items:center; flex-wrap:wrap; justify-content:center;">
-            <label style="font-size:17px;">每次作答時間：
-                <select id="timeLimit">
-                    <option value="0">不計時</option>
-                    <option value="30">30 秒</option>
-                    <option value="60" selected>60 秒</option>
-                    <option value="90">90 秒</option>
-                    <option value="120">120 秒</option>
-                </select>
-            </label>
+
+        <div class="setting-group">
+            <label>年份設定（可複選，影響猜題範圍）</label>
+            <div class="btn-group">
+                <button onclick="toggleYear(this)" data-year="2014-">2014以前</button>
+                <button onclick="toggleYear(this)" data-year="2015-2019">2015~2019</button>
+                <button onclick="toggleYear(this)" data-year="2020-2026">2020~2026</button>
+            </div>
         </div>
-        
-        <div style="display:flex; gap:12px; flex-wrap:wrap; justify-content:center;">
-            <button onclick="startGameWithSettings()" style="background:#e91e63; font-size:16px; padding:12px 28px;">
+
+        <div class="setting-group">
+            <label>每次作答時間</label>
+            <div class="btn-group">
+                <button onclick="selectTime(0)" id="time0">不計時</button>
+                <button onclick="selectTime(30)" id="time30">30 秒</button>
+                <button onclick="selectTime(60)" id="time60">60 秒</button>
+                <button onclick="selectTime(90)" id="time90">90 秒</button>
+                <button onclick="selectTime(120)" id="time120">120 秒</button>
+            </div>
+        </div>
+
+        <div style="margin-top: 30px;">
+            <button onclick="startGameWithSettings()" style="background:#e91e63; font-size:17px; padding:14px 36px;">
                 ▶️ 開始遊戲
             </button>
-            <button onclick="confirmNewGame()" style="background:#333; font-size:16px; padding:12px 24px;">
+            <button onclick="confirmNewGame()" style="background:#333; font-size:16px; padding:12px 28px; margin-left: 10px;">
                 🔄 新遊戲
             </button>
         </div>
     </div>
 
     <div id="timer">本次回答剩餘時間：不計時</div>
-    
+ 
     <div class="input-area">
-        <input id="guessInput" placeholder="輸入偶像名字（請先按開始遊戲）" 
+        <input id="guessInput" placeholder="輸入偶像名字（請先按開始遊戲）"
                autocomplete="off" oninput="showSuggestions()" disabled>
         <div id="suggestions"></div>
     </div>
-  
-    <h2 id="result"></h2>
-    
+   
     <div class="table-container">
         <table>
             <thead>
                 <tr>
                     <th class="count-col">次數</th>
-                    <th>名字</th><th>團體</th><th>國籍</th><th>出生年</th><th>出道年</th><th>成員數</th>
+                    <th class="name-col">名字</th>
+                    <th class="group-col">團體</th>
+                    <th class="debut-col">出道年</th>
+                    <th class="members-col">成員數</th>
+                    <th class="nationality-col">國籍</th>
+                    <th class="birthyear-col">出生年</th>
+                    <th class="birthmonth-col">出生月</th>
                 </tr>
             </thead>
             <tbody id="gameBody"></tbody>
         </table>
     </div>
+
+    <h2 id="result"></h2>
 
     <!-- 題庫彈窗 -->
     <div id="databaseModal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.9);justify-content:center;align-items:center;z-index:200;">
@@ -256,7 +181,8 @@
                     <option value="all">全部</option>
                     <option value="group">團體</option>
                     <option value="nationality">國籍</option>
-                    <option value="birth">出生年</option>
+                    <option value="birthy">出生年</option>
+                    <option value="birthm">出生月</option>
                     <option value="debut">出道年</option>
                     <option value="members">成員數</option>
                 </select>
@@ -265,7 +191,10 @@
             </div>
             <table style="width:100%;">
                 <thead>
-                    <tr><th>名字</th><th>團體</th><th>國籍</th><th>出生年</th><th>出道年</th><th>成員數</th></tr>
+                    <tr>
+                        <th>名字</th><th>團體</th><th>出道年</th><th>成員數</th>
+                        <th>國籍</th><th>出生年</th><th>出生月</th>
+                    </tr>
                 </thead>
                 <tbody id="dbBody"></tbody>
             </table>
@@ -273,315 +202,361 @@
     </div>
     <datalist id="searchList"></datalist>
 
-    <div class="footer">
-        <div class="social-area">
-            <p style="margin-bottom: 25px; font-size: 19px; color: #ddd;">
-                如果喜歡這遊戲，歡迎訂閱追隨支持！
-            </p>
-            <a href="https://www.youtube.com/@kpopcast" target="_blank" style="margin: 0 25px; font-size: 22px; text-decoration: none; color: #ff4081;">YouTube</a>
-            <a href="https://www.threads.com/@shr1mp_527" target="_blank" style="margin: 0 25px; font-size: 22px; text-decoration: none; color: #ff4081;">Threads</a>
-        </div>
-    </div>
-
 <script>
-// ================== 資料 ==================
+// ================== 資料庫（範例幾筆） ==================
 const idols = [
-{ name:"Giselle", group:"aespa", nationality:"日本/南韓", birth:2000, debut:2020, members:4 },
-{ name:"Karina", group:"aespa", nationality:"南韓", birth:2000, debut:2020, members:4 },
-{ name:"Winter", group:"aespa", nationality:"南韓", birth:2001, debut:2020, members:4 },
-{ name:"NingNing", group:"aespa", nationality:"中國", birth:2002, debut:2020, members:4 },
-
-{ name:"Park Cho Rong", group:"Apink", nationality:"南韓", birth:1991, debut:2011, members:5 },
-{ name:"Jeong Eun Ji", group:"Apink", nationality:"南韓", birth:1993, debut:2011, members:5 },
-{ name:"Yoon Bo Mi", group:"Apink", nationality:"南韓", birth:1993, debut:2011, members:5 },
-{ name:"Kim Nam Joo", group:"Apink", nationality:"南韓", birth:1995, debut:2011, members:5 },
-{ name:"Oh Ha Young", group:"Apink", nationality:"南韓", birth:1996, debut:2011, members:5 },
-
-{ name:"HaSeul", group:"ARTMS", nationality:"南韓", birth:1997, debut:2024, members:5 },
-{ name:"JinSoul", group:"ARTMS", nationality:"南韓", birth:1997, debut:2024, members:5 },
-{ name:"Kim Lip", group:"ARTMS", nationality:"南韓", birth:1999, debut:2024, members:5 },
-{ name:"HeeJin", group:"ARTMS", nationality:"南韓", birth:2000, debut:2024, members:5 },
-{ name:"Choerry", group:"ARTMS", nationality:"南韓", birth:2001, debut:2024, members:5 },
-
-{ name:"Ruka", group:"BABYMONSTER", nationality:"日本", birth:2002, debut:2024, members:7 },
-{ name:"Pharita", group:"BABYMONSTER", nationality:"泰國", birth:2005, debut:2024, members:7 },
-{ name:"Asa", group:"BABYMONSTER", nationality:"日本", birth:2006, debut:2024, members:7 },
-{ name:"Ahyeon", group:"BABYMONSTER", nationality:"南韓", birth:2007, debut:2024, members:7 },
-{ name:"Rami", group:"BABYMONSTER", nationality:"南韓", birth:2007, debut:2024, members:7 },
-{ name:"Rora", group:"BABYMONSTER", nationality:"南韓", birth:2008, debut:2024, members:7 },
-{ name:"Chiquita", group:"BABYMONSTER", nationality:"泰國", birth:2009, debut:2024, members:7 },
-
-{ name:"MOON SUA", group:"Billlie", nationality:"南韓", birth:1999, debut:2021, members:7 },
-{ name:"SUHYEON", group:"Billlie", nationality:"南韓", birth:2000, debut:2021, members:7 },
-{ name:"HARAM", group:"Billlie", nationality:"南韓", birth:2001, debut:2021, members:7 },
-{ name:"TSUKI", group:"Billlie", nationality:"日本", birth:2002, debut:2021, members:7 },
-{ name:"SHEON", group:"Billlie", nationality:"南韓", birth:2003, debut:2021, members:7 },
-{ name:"SIYOON", group:"Billlie", nationality:"南韓", birth:2005, debut:2021, members:7 },
-{ name:"HARUNA", group:"Billlie", nationality:"日本", birth:2006, debut:2021, members:7 },
-
-{ name:"Jisoo", group:"BLACKPINK", nationality:"南韓", birth:1995, debut:2016, members:4 },
-{ name:"Jennie", group:"BLACKPINK", nationality:"南韓", birth:1996, debut:2016, members:4 },
-{ name:"Rosé", group:"BLACKPINK", nationality:"南韓/紐西蘭", birth:1997, debut:2016, members:4 },
-{ name:"Lisa", group:"BLACKPINK", nationality:"泰國", birth:1997, debut:2016, members:4 },
-    
-{ name:"Keena", group:"FIFTY FIFTY", nationality:"南韓", birth:2002, debut:2022, members:5 },
-{ name:"ChanelleMoon", group:"FIFTY FIFTY", nationality:"南韓/美國", birth:2003, debut:2022, members:5 },
-{ name:"Yewon", group:"FIFTY FIFTY", nationality:"南韓", birth:2005, debut:2022, members:5 },
-{ name:"Hana", group:"FIFTY FIFTY", nationality:"南韓", birth:2006, debut:2022, members:5 },
-{ name:"Athena", group:"FIFTY FIFTY", nationality:"南韓/瑞典", birth:2007, debut:2022, members:5 },
-
-{ name:"Hayoung", group:"fromis_9", nationality:"南韓", birth:1997, debut:2018, members:5 },
-{ name:"Jiwon", group:"fromis_9", nationality:"南韓", birth:1998, debut:2018, members:5 },
-{ name:"Chaeyoung", group:"fromis_9", nationality:"南韓", birth:2000, debut:2018, members:5 },
-{ name:"Nagyung", group:"fromis_9", nationality:"南韓", birth:2000, debut:2018, members:5 },
-{ name:"Jiheon", group:"fromis_9", nationality:"南韓", birth:2003, debut:2018, members:5 },
-
-{ name:"Seoi", group:"H1-KEY", nationality:"南韓", birth:2000, debut:2022, members:4 },
-{ name:"Riina", group:"H1-KEY", nationality:"南韓", birth:2001, debut:2022, members:4 },
-{ name:"Hwiseo", group:"H1-KEY", nationality:"南韓", birth:2002, debut:2022, members:4 },
-{ name:"Yel", group:"H1-KEY", nationality:"南韓", birth:2004, debut:2022, members:4 },
-
-{ name:"Carmen", group:"Hearts2Hearts", nationality:"印尼", birth:2006, debut:2025, members:8 },
-{ name:"Jiwoo", group:"Hearts2Hearts", nationality:"南韓", birth:2006, debut:2025, members:8 },
-{ name:"Stella", group:"Hearts2Hearts", nationality:"南韓/加拿大", birth:2007, debut:2025, members:8 },
-{ name:"Yuha", group:"Hearts2Hearts", nationality:"南韓", birth:2007, debut:2025, members:8 },
-{ name:"A-na", group:"Hearts2Hearts", nationality:"南韓", birth:2008, debut:2025, members:8 },
-{ name:"Juun", group:"Hearts2Hearts", nationality:"南韓", birth:2008, debut:2025, members:8 },
-{ name:"Ian", group:"Hearts2Hearts", nationality:"南韓", birth:2009, debut:2025, members:8 },
-{ name:"Ye-on", group:"Hearts2Hearts", nationality:"南韓", birth:2010, debut:2025, members:8 },
-
-{ name:"Minnie", group:"i-dle", nationality:"泰國", birth:1997, debut:2018, members:5 },
-{ name:"Miyeon", group:"i-dle", nationality:"南韓", birth:1997, debut:2018, members:5 },
-{ name:"Soyeon", group:"i-dle", nationality:"南韓", birth:1998, debut:2018, members:5 },
-{ name:"Yuqi", group:"i-dle", nationality:"中國", birth:1999, debut:2018, members:5 },
-{ name:"Shuhua", group:"i-dle", nationality:"台灣", birth:2000, debut:2018, members:5 },
-
-{ name:"Taerin", group:"ifeye", nationality:"南韓", birth:2006, debut:2025, members:6 },
-{ name:"Won Hwayeon", group:"ifeye", nationality:"南韓", birth:2006, debut:2025, members:6 },
-{ name:"Rahee", group:"ifeye", nationality:"南韓", birth:2007, debut:2025, members:6 },
-{ name:"Kasia", group:"ifeye", nationality:"南韓", birth:2008, debut:2025, members:6 },
-{ name:"Meu", group:"ifeye", nationality:"南韓", birth:2008, debut:2025, members:6 },
-{ name:"Sasha", group:"ifeye", nationality:"南韓", birth:2009, debut:2025, members:6 },
-
-{ name:"Minju", group:"ILLIT", nationality:"南韓", birth:2004, debut:2024, members:5 },
-{ name:"Moka", group:"ILLIT", nationality:"日本", birth:2004, debut:2024, members:5 },
-{ name:"Yunah", group:"ILLIT", nationality:"南韓", birth:2004, debut:2024, members:5 },
-{ name:"Wonhee", group:"ILLIT", nationality:"南韓", birth:2007, debut:2024, members:5 },
-{ name:"Iroha", group:"ILLIT", nationality:"日本", birth:2008, debut:2024, members:5 },
-{ name:"Lia", group:"ITZY", nationality:"南韓", birth:2000, debut:2019, members:5 },
-{ name:"Yeji", group:"ITZY", nationality:"南韓", birth:2000, debut:2019, members:5 },
-{ name:"Chaeryeong", group:"ITZY", nationality:"南韓", birth:2001, debut:2019, members:5 },
-{ name:"Ryujin", group:"ITZY", nationality:"南韓", birth:2001, debut:2019, members:5 },
-{ name:"Yuna", group:"ITZY", nationality:"南韓", birth:2003, debut:2019, members:5 },
-
-{ name:"Gaeul", group:"IVE", nationality:"南韓", birth:2002, debut:2021, members:6 },
-{ name:"Yujin", group:"IVE", nationality:"南韓", birth:2003, debut:2021, members:6 },
-{ name:"Liz", group:"IVE", nationality:"南韓", birth:2004, debut:2021, members:6 },
-{ name:"Rei", group:"IVE", nationality:"日本", birth:2004, debut:2021, members:6 },
-{ name:"Wonyoung", group:"IVE", nationality:"南韓", birth:2004, debut:2021, members:6 },
-{ name:"Leeseo", group:"IVE", nationality:"南韓", birth:2007, debut:2021, members:6 },
-
-{ name:"MAI", group:"izna", nationality:"日本", birth:2004, debut:2024, members:6 },
-{ name:"BANG JEE MIN", group:"izna", nationality:"南韓", birth:2005, debut:2024, members:6 },
-{ name:"KOKO", group:"izna", nationality:"日本", birth:2006, debut:2024, members:6 },
-{ name:"CHOI JUNG EUN", group:"izna", nationality:"南韓", birth:2007, debut:2024, members:6 },
-{ name:"RYU SA RANG", group:"izna", nationality:"南韓", birth:2007, debut:2024, members:6 },
-{ name:"JEONG SAE BI", group:"izna", nationality:"南韓", birth:2008, debut:2024, members:6 },
-
-{ name:"Choi Yu Jin", group:"Kep1er", nationality:"南韓", birth:1996, debut:2022, members:6 },
-{ name:"Shen Xiao Ting", group:"Kep1er", nationality:"中國", birth:1999, debut:2022, members:6 },
-{ name:"Kim Chae Hyun", group:"Kep1er", nationality:"南韓", birth:2002, debut:2022, members:6 },
-{ name:"Kim Da Yeon", group:"Kep1er", nationality:"南韓", birth:2003, debut:2022, members:6 },
-{ name:"Ezaki Hikaru", group:"Kep1er", nationality:"日本", birth:2004, debut:2022, members:6 },
-{ name:"Huening Bahiyyih", group:"Kep1er", nationality:"南韓/美國", birth:2004, debut:2022, members:6 },
-
-{ name:"Leesol", group:"KiiiKiii", nationality:"南韓", birth:2005, debut:2025, members:5 },
-{ name:"Haum", group:"KiiiKiii", nationality:"南韓", birth:2006, debut:2025, members:5 },
-{ name:"Jiyu", group:"KiiiKiii", nationality:"南韓", birth:2006, debut:2025, members:5 },
-{ name:"Sui", group:"KiiiKiii", nationality:"南韓", birth:2006, debut:2025, members:5 },
-{ name:"Kya", group:"KiiiKiii", nationality:"南韓", birth:2010, debut:2025, members:5 },
-
-{ name:"JULIE", group:"KISS OF LIFE", nationality:"南韓/美國", birth:2000, debut:2023, members:4 },
-{ name:"NATTY", group:"KISS OF LIFE", nationality:"泰國", birth:2002, debut:2023, members:4 },
-{ name:"BELLE", group:"KISS OF LIFE", nationality:"南韓/美國", birth:2004, debut:2023, members:4 },
-{ name:"HANEUL", group:"KISS OF LIFE", nationality:"南韓", birth:2005, debut:2023, members:4 },
-
-{ name:"Sakura", group:"LE SSERAFIM", nationality:"日本", birth:1998, debut:2022, members:5 },
-{ name:"Chaewon", group:"LE SSERAFIM", nationality:"南韓", birth:2000, debut:2022, members:5 },
-{ name:"Yunjin", group:"LE SSERAFIM", nationality:"南韓/美國", birth:2001, debut:2022, members:5 },
-{ name:"Kazuha", group:"LE SSERAFIM", nationality:"日本", birth:2003, debut:2022, members:5 },
-{ name:"Eunchae", group:"LE SSERAFIM", nationality:"南韓", birth:2006, debut:2022, members:5 },
-
-{ name:"CHOWON", group:"LIGHTSUM", nationality:"南韓", birth:2002, debut:2021, members:6 },
-{ name:"NAYOUNG", group:"LIGHTSUM", nationality:"南韓", birth:2002, debut:2021, members:6 },
-{ name:"SANGAH", group:"LIGHTSUM", nationality:"南韓", birth:2002, debut:2021, members:6 },
-{ name:"HINA", group:"LIGHTSUM", nationality:"日本", birth:2003, debut:2021, members:6 },
-{ name:"JUHYEON", group:"LIGHTSUM", nationality:"南韓", birth:2004, debut:2021, members:6 },
-{ name:"YUJEONG", group:"LIGHTSUM", nationality:"南韓", birth:2004, debut:2021, members:6 },
-
-{ name:"MASHIRO", group:"MADEIN", nationality:"日本", birth:1999, debut:2024, members:4 },
-{ name:"MiU", group:"MADEIN", nationality:"日本", birth:2003, debut:2024, members:4 },
-{ name:"SERINA", group:"MADEIN", nationality:"日本", birth:2006, debut:2024, members:4 },
-{ name:"NAGOMI", group:"MADEIN", nationality:"日本", birth:2007, debut:2024, members:4 },
-
-{ name:"Anna", group:"MEOVV", nationality:"日本", birth:2005, debut:2024, members:5 },
-{ name:"Gawon", group:"MEOVV", nationality:"南韓/美國", birth:2005, debut:2024, members:5 },
-{ name:"Sooin", group:"MEOVV", nationality:"南韓", birth:2005, debut:2024, members:5 },
-{ name:"Narin", group:"MEOVV", nationality:"南韓", birth:2007, debut:2024, members:5 },
-{ name:"Ella", group:"MEOVV", nationality:"南韓/美國", birth:2008, debut:2024, members:5 },
-
-{ name:"Lily", group:"NMIXX", nationality:"澳洲/南韓", birth:2002, debut:2022, members:6 },
-{ name:"Haewon", group:"NMIXX", nationality:"南韓", birth:2003, debut:2022, members:6 },
-{ name:"Bae", group:"NMIXX", nationality:"南韓", birth:2004, debut:2022, members:6 },
-{ name:"Sullyoon", group:"NMIXX", nationality:"南韓", birth:2004, debut:2022, members:6 },
-{ name:"Jiwoo", group:"NMIXX", nationality:"南韓", birth:2005, debut:2022, members:6 },
-{ name:"Kyujin", group:"NMIXX", nationality:"南韓", birth:2006, debut:2022, members:6 },
-
-{ name:"MAIKA", group:"ODD YOUTH", nationality:"日本", birth:2005, debut:2024, members:5 },
-{ name:"MYAH", group:"ODD YOUTH", nationality:"南韓/美國", birth:2006, debut:2024, members:5 },
-{ name:"KANIE", group:"ODD YOUTH", nationality:"南韓", birth:2007, debut:2024, members:5 },
-{ name:"SUMMER", group:"ODD YOUTH", nationality:"南韓", birth:2007, debut:2024, members:5 },
-{ name:"YE EUM", group:"ODD YOUTH", nationality:"南韓", birth:2007, debut:2024, members:5 },
-
-{ name:"Hyojung", group:"OH MY GIRL", nationality:"南韓", birth:1994, debut:2015, members:6 },
-{ name:"Mimi", group:"OH MY GIRL", nationality:"南韓", birth:1995, debut:2015, members:6 },
-{ name:"YooA", group:"OH MY GIRL", nationality:"南韓", birth:1995, debut:2015, members:6 },
-{ name:"Seunghee", group:"OH MY GIRL", nationality:"南韓", birth:1996, debut:2015, members:6 },
-{ name:"Yubin", group:"OH MY GIRL", nationality:"南韓", birth:1997, debut:2015, members:6 },
-{ name:"Arin", group:"OH MY GIRL", nationality:"南韓", birth:1999, debut:2015, members:6 },
-
-{ name:"Magenta", group:"QWER", nationality:"南韓", birth:1997, debut:2023, members:4 },
-{ name:"Chodan", group:"QWER", nationality:"南韓", birth:1998, debut:2023, members:4 },
-{ name:"Siyeon", group:"QWER", nationality:"南韓", birth:2000, debut:2023, members:4 },
-{ name:"Hina", group:"QWER", nationality:"南韓", birth:2001, debut:2023, members:4 },
-
-{ name:"Irene", group:"Red Velvet", nationality:"南韓", birth:1991, debut:2014, members:5 },
-{ name:"Seulgi", group:"Red Velvet", nationality:"南韓", birth:1994, debut:2014, members:5 },
-{ name:"Wendy", group:"Red Velvet", nationality:"南韓", birth:1994, debut:2014, members:5 },
-{ name:"Joy", group:"Red Velvet", nationality:"南韓", birth:1996, debut:2014, members:5 },
-{ name:"Yeri", group:"Red Velvet", nationality:"南韓", birth:1999, debut:2014, members:5 },
-
-{ name:"Woni", group:"RESCENE", nationality:"南韓", birth:2004, debut:2024, members:5 },
-{ name:"Liv", group:"RESCENE", nationality:"南韓", birth:2006, debut:2024, members:5 },
-{ name:"Minami", group:"RESCENE", nationality:"日本", birth:2006, debut:2024, members:5 },
-{ name:"May", group:"RESCENE", nationality:"南韓", birth:2008, debut:2024, members:5 },
-{ name:"Zena", group:"RESCENE", nationality:"南韓", birth:2008, debut:2024, members:5 },
-
-{ name:"HITOMI", group:"SAY MY NAME", nationality:"日本", birth:2001, debut:2024, members:8 },
-{ name:"SHUIE", group:"SAY MY NAME", nationality:"中國", birth:2004, debut:2024, members:8 },
-{ name:"KANNY", group:"SAY MY NAME", nationality:"泰國", birth:2005, debut:2024, members:8 },
-{ name:"MEI", group:"SAY MY NAME", nationality:"日本", birth:2005, debut:2024, members:8 },
-{ name:"DOHEE", group:"SAY MY NAME", nationality:"南韓", birth:2006, debut:2024, members:8 },
-{ name:"SOHA", group:"SAY MY NAME", nationality:"南韓", birth:2006, debut:2024, members:8 },
-{ name:"JUNHWI", group:"SAY MY NAME", nationality:"南韓", birth:2007, debut:2024, members:8 },
-{ name:"SEUNGJOO", group:"SAY MY NAME", nationality:"南韓", birth:2010, debut:2024, members:8 },
-
-{ name:"Kwon Eunbi", group:"SOLO", nationality:"南韓", birth:1995, debut:2021, members:1 },
-
-{ name:"Choi Yena", group:"SOLO", nationality:"南韓", birth:1999, debut:2022, members:1 },
-
-{ name:"Lee Chaeyeon", group:"SOLO", nationality:"南韓", birth:2000, debut:2022, members:1 },
-
-{ name:"Jo Yuri", group:"SOLO", nationality:"南韓", birth:2001, debut:2021, members:1 },
-
-{ name:"GYUBIN", group:"SOLO", nationality:"南韓", birth:2006, debut:2024, members:1 },
-
-{ name:"Sieun", group:"STAYC", nationality:"南韓", birth:2001, debut:2020, members:6 },
-{ name:"Sumin", group:"STAYC", nationality:"南韓", birth:2001, debut:2020, members:6 },
-{ name:"Isa", group:"STAYC", nationality:"南韓", birth:2002, debut:2020, members:6 },
-{ name:"Seeun", group:"STAYC", nationality:"南韓", birth:2003, debut:2020, members:6 },
-{ name:"J", group:"STAYC", nationality:"南韓", birth:2004, debut:2020, members:6 },
-{ name:"Yoon", group:"STAYC", nationality:"南韓", birth:2004, debut:2020, members:6 },
-
-{ name:"YooYeon", group:"tripleS", nationality:"南韓", birth:2001, debut:2023, members:24 },
-{ name:"Mayu", group:"tripleS", nationality:"日本", birth:2002, debut:2023, members:24 },
-{ name:"NaKyoung", group:"tripleS", nationality:"南韓", birth:2002, debut:2023, members:24 },
-{ name:"SoHyun", group:"tripleS", nationality:"南韓", birth:2002, debut:2023, members:24 },
-{ name:"Xinyu", group:"tripleS", nationality:"中國", birth:2002, debut:2023, members:24 },
-{ name:"DaHyun", group:"tripleS", nationality:"南韓", birth:2003, debut:2023, members:24 },
-{ name:"Nien", group:"tripleS", nationality:"台灣", birth:2003, debut:2023, members:24 },
-{ name:"SeoYeon", group:"tripleS", nationality:"南韓", birth:2003, debut:2023, members:24 },
-{ name:"ChaeYeon", group:"tripleS", nationality:"南韓", birth:2004, debut:2023, members:24 },
-{ name:"JiYeon", group:"tripleS", nationality:"南韓", birth:2004, debut:2023, members:24 },
-{ name:"Kotone", group:"tripleS", nationality:"日本", birth:2004, debut:2023, members:24 },
-{ name:"JiWoo", group:"tripleS", nationality:"南韓", birth:2005, debut:2023, members:24 },
-{ name:"Kaede", group:"tripleS", nationality:"日本", birth:2005, debut:2023, members:24 },
-{ name:"YuBin", group:"tripleS", nationality:"南韓", birth:2005, debut:2023, members:24 },
-{ name:"Lynn", group:"tripleS", nationality:"日本", birth:2006, debut:2023, members:24 },
-{ name:"ShiOn", group:"tripleS", nationality:"南韓", birth:2006, debut:2023, members:24 },
-{ name:"Sullin", group:"tripleS", nationality:"泰國", birth:2006, debut:2023, members:24 },
-{ name:"ChaeWon", group:"tripleS", nationality:"南韓", birth:2007, debut:2023, members:24 },
-{ name:"HaYeon", group:"tripleS", nationality:"南韓", birth:2007, debut:2023, members:24 },
-{ name:"HyeRin", group:"tripleS", nationality:"南韓", birth:2007, debut:2023, members:24 },
-{ name:"SooMin", group:"tripleS", nationality:"南韓", birth:2007, debut:2023, members:24 },
-{ name:"YeonJi", group:"tripleS", nationality:"南韓", birth:2008, debut:2023, members:24 },
-{ name:"JooBin", group:"tripleS", nationality:"南韓", birth:2009, debut:2023, members:24 },
-{ name:"SeoAh", group:"tripleS", nationality:"南韓", birth:2010, debut:2023, members:24 },
-
-{ name:"Nayeon", group:"TWICE", nationality:"南韓", birth:1995, debut:2015, members:9 },
-{ name:"Jeongyeon", group:"TWICE", nationality:"南韓", birth:1996, debut:2015, members:9 },
-{ name:"Momo", group:"TWICE", nationality:"日本", birth:1996, debut:2015, members:9 },
-{ name:"Sana", group:"TWICE", nationality:"日本", birth:1996, debut:2015, members:9 },
-{ name:"Jihyo", group:"TWICE", nationality:"南韓", birth:1997, debut:2015, members:9 },
-{ name:"Mina", group:"TWICE", nationality:"日本", birth:1997, debut:2015, members:9 },
-{ name:"Dahyun", group:"TWICE", nationality:"南韓", birth:1998, debut:2015, members:9 },
-{ name:"Chaeyoung", group:"TWICE", nationality:"南韓", birth:1999, debut:2015, members:9 },
-{ name:"Tzuyu", group:"TWICE", nationality:"台灣", birth:1999, debut:2015, members:9 },
-
-{ name:"Eunha", group:"VIVIZ", nationality:"南韓", birth:1997, debut:2022, members:3 },
-{ name:"SinB", group:"VIVIZ", nationality:"南韓", birth:1998, debut:2022, members:3 },
-{ name:"Umji", group:"VIVIZ", nationality:"南韓", birth:1998, debut:2022, members:3 },
-
-{ name:"SeolA", group:"WJSN", nationality:"南韓", birth:1994, debut:2016, members:10 },
-{ name:"BoNa", group:"WJSN", nationality:"南韓", birth:1995, debut:2016, members:10 },
-{ name:"Exy", group:"WJSN", nationality:"南韓", birth:1995, debut:2016, members:10 },
-{ name:"SooBin", group:"WJSN", nationality:"南韓", birth:1996, debut:2016, members:10 },
-{ name:"DaWon", group:"WJSN", nationality:"南韓", birth:1997, debut:2016, members:10 },
-{ name:"Luda", group:"WJSN", nationality:"南韓", birth:1997, debut:2016, members:10 },
-{ name:"EunSeo", group:"WJSN", nationality:"南韓", birth:1998, debut:2016, members:10 },
-{ name:"DaYoung", group:"WJSN", nationality:"南韓", birth:1999, debut:2016, members:10 },
-{ name:"YeoReum", group:"WJSN", nationality:"南韓", birth:1999, debut:2016, members:10 },
-{ name:"YeonJung", group:"WJSN", nationality:"南韓", birth:1999, debut:2016, members:10 },
-
-{ name:"Doeun", group:"YOUNG POSSE", nationality:"南韓", birth:2007, debut:2023, members:5 },
-{ name:"Jiana", group:"YOUNG POSSE", nationality:"南韓", birth:2006, debut:2023, members:5 },
-{ name:"Jieun", group:"YOUNG POSSE", nationality:"南韓", birth:2009, debut:2023, members:5 },
-{ name:"Sunhye", group:"YOUNG POSSE", nationality:"南韓", birth:2004, debut:2023, members:5 },
-{ name:"Yeonjung", group:"YOUNG POSSE", nationality:"南韓", birth:2004, debut:2023, members:5 }
+    { name:"Karina", group:"aespa", debut:2020, members:4, nationality:"南韓", birthy:2000, birthm:4 },
+    { name:"Giselle", group:"aespa", debut:2020, members:4, nationality:"日本/南韓", birthy:2000, birthm:10 },
+    { name:"Winter", group:"aespa", debut:2020, members:4, nationality:"南韓", birthy:2001, birthm:1 },
+    { name:"NingNing", group:"aespa", debut:2020, members:4, nationality:"中國", birthy:2002, birthm:10 },
+    { name:"Park Cho Rong", group:"Apink", debut:2011, members:5, nationality:"南韓", birthy:1991, birthm:3 },
+    { name:"Yoon Bo Mi", group:"Apink", debut:2011, members:5, nationality:"南韓", birthy:1993, birthm:8 },
+    { name:"Jeong Eun Ji", group:"Apink", debut:2011, members:5, nationality:"南韓", birthy:1993, birthm:8 },
+    { name:"Kim Nam Joo", group:"Apink", debut:2011, members:5, nationality:"南韓", birthy:1995, birthm:4 },
+    { name:"Oh Ha Young", group:"Apink", debut:2011, members:5, nationality:"南韓", birthy:1996, birthm:7 },
+    { name:"JinSoul", group:"ARTMS", debut:2024, members:5, nationality:"南韓", birthy:1997, birthm:6 },
+    { name:"HaSeul", group:"ARTMS", debut:2024, members:5, nationality:"南韓", birthy:1997, birthm:8 },
+    { name:"Kim Lip", group:"ARTMS", debut:2024, members:5, nationality:"南韓", birthy:1999, birthm:2 },
+    { name:"HeeJin", group:"ARTMS", debut:2024, members:5, nationality:"南韓", birthy:2000, birthm:10 },
+    { name:"Choerry", group:"ARTMS", debut:2024, members:5, nationality:"南韓", birthy:2001, birthm:6 },
+    { name:"Yihyun", group:"Baby DONT Cry", debut:2025, members:4, nationality:"南韓", birthy:2006, birthm:4 },
+    { name:"Kumi", group:"Baby DONT Cry", debut:2025, members:4, nationality:"日本", birthy:2007, birthm:8 },
+    { name:"Mia", group:"Baby DONT Cry", debut:2025, members:4, nationality:"日本", birthy:2007, birthm:9 },
+    { name:"Beni", group:"Baby DONT Cry", debut:2025, members:4, nationality:"南韓", birthy:2008, birthm:12 },
+    { name:"Ruka", group:"BABYMONSTER", debut:2024, members:7, nationality:"日本", birthy:2002, birthm:3 },
+    { name:"Pharita", group:"BABYMONSTER", debut:2024, members:7, nationality:"泰國", birthy:2005, birthm:8 },
+    { name:"Asa", group:"BABYMONSTER", debut:2024, members:7, nationality:"日本", birthy:2006, birthm:4 },
+    { name:"Ahyeon", group:"BABYMONSTER", debut:2024, members:7, nationality:"南韓", birthy:2007, birthm:4 },
+    { name:"Rami", group:"BABYMONSTER", debut:2024, members:7, nationality:"南韓", birthy:2007, birthm:10 },
+    { name:"Rora", group:"BABYMONSTER", debut:2024, members:7, nationality:"南韓", birthy:2008, birthm:8 },
+    { name:"Chiquita", group:"BABYMONSTER", debut:2024, members:7, nationality:"泰國", birthy:2009, birthm:2 },
+    { name:"MOON SUA", group:"Billlie", debut:2021, members:7, nationality:"南韓", birthy:1999, birthm:9 },
+    { name:"SUHYEON", group:"Billlie", debut:2021, members:7, nationality:"南韓", birthy:2000, birthm:1 },
+    { name:"HARAM", group:"Billlie", debut:2021, members:7, nationality:"南韓", birthy:2001, birthm:1 },
+    { name:"TSUKI", group:"Billlie", debut:2021, members:7, nationality:"日本", birthy:2002, birthm:9 },
+    { name:"SHEON", group:"Billlie", debut:2021, members:7, nationality:"南韓", birthy:2003, birthm:1 },
+    { name:"SIYOON", group:"Billlie", debut:2021, members:7, nationality:"南韓", birthy:2005, birthm:2 },
+    { name:"HARUNA", group:"Billlie", debut:2021, members:7, nationality:"日本", birthy:2006, birthm:1 },
+    { name:"Jisoo", group:"BLACKPINK", debut:2016, members:4, nationality:"南韓", birthy:1995, birthm:1 },
+    { name:"Jennie", group:"BLACKPINK", debut:2016, members:4, nationality:"南韓", birthy:1996, birthm:1 },
+    { name:"Rosé", group:"BLACKPINK", debut:2016, members:4, nationality:"南韓/紐西蘭", birthy:1997, birthm:2 },
+    { name:"Lisa", group:"BLACKPINK", debut:2016, members:4, nationality:"泰國", birthy:1997, birthm:3 },
+    { name:"Keena", group:"FIFTY FIFTY", debut:2022, members:5, nationality:"南韓", birthy:2002, birthm:7 },
+    { name:"ChanelleMoon", group:"FIFTY FIFTY", debut:2022, members:5, nationality:"南韓/美國", birthy:2003, birthm:6 },
+    { name:"Yewon", group:"FIFTY FIFTY", debut:2022, members:5, nationality:"南韓", birthy:2005, birthm:3 },
+    { name:"Hana", group:"FIFTY FIFTY", debut:2022, members:5, nationality:"南韓", birthy:2006, birthm:9 },
+    { name:"Athena", group:"FIFTY FIFTY", debut:2022, members:5, nationality:"南韓/瑞典", birthy:2007, birthm:3 },
+    { name:"Hayoung", group:"fromis_9", debut:2018, members:5, nationality:"南韓", birthy:1997, birthm:9 },
+    { name:"Jiwon", group:"fromis_9", debut:2018, members:5, nationality:"南韓", birthy:1998, birthm:3 },
+    { name:"Chaeyoung", group:"fromis_9", debut:2018, members:5, nationality:"南韓", birthy:2000, birthm:5 },
+    { name:"Nagyung", group:"fromis_9", debut:2018, members:5, nationality:"南韓", birthy:2000, birthm:6 },
+    { name:"Jiheon", group:"fromis_9", debut:2018, members:5, nationality:"南韓", birthy:2003, birthm:4 },
+    { name:"Seoi", group:"H1-KEY", debut:2022, members:4, nationality:"南韓", birthy:2000, birthm:2 },
+    { name:"Riina", group:"H1-KEY", debut:2022, members:4, nationality:"南韓", birthy:2001, birthm:2 },
+    { name:"Hwiseo", group:"H1-KEY", debut:2022, members:4, nationality:"南韓", birthy:2002, birthm:7 },
+    { name:"Yel", group:"H1-KEY", debut:2022, members:4, nationality:"南韓", birthy:2004, birthm:12 },
+    { name:"Carmen", group:"Hearts2Hearts", debut:2025, members:8, nationality:"印尼", birthy:2006, birthm:3 },
+    { name:"Jiwoo", group:"Hearts2Hearts", debut:2025, members:8, nationality:"南韓", birthy:2006, birthm:9 },
+    { name:"Yuha", group:"Hearts2Hearts", debut:2025, members:8, nationality:"南韓", birthy:2007, birthm:4 },
+    { name:"Stella", group:"Hearts2Hearts", debut:2025, members:8, nationality:"南韓/加拿大", birthy:2007, birthm:6 },
+    { name:"Juun", group:"Hearts2Hearts", debut:2025, members:8, nationality:"南韓", birthy:2008, birthm:12 },
+    { name:"A-na", group:"Hearts2Hearts", debut:2025, members:8, nationality:"南韓", birthy:2008, birthm:12 },
+    { name:"Ian", group:"Hearts2Hearts", debut:2025, members:8, nationality:"南韓", birthy:2009, birthm:10 },
+    { name:"Ye-on", group:"Hearts2Hearts", debut:2025, members:8, nationality:"南韓", birthy:2010, birthm:4 },
+    { name:"Miyeon", group:"i-dle", debut:2018, members:5, nationality:"南韓", birthy:1997, birthm:1 },
+    { name:"Minnie", group:"i-dle", debut:2018, members:5, nationality:"泰國", birthy:1997, birthm:10 },
+    { name:"Soyeon", group:"i-dle", debut:2018, members:5, nationality:"南韓", birthy:1998, birthm:8 },
+    { name:"Yuqi", group:"i-dle", debut:2018, members:5, nationality:"中國", birthy:1999, birthm:9 },
+    { name:"Shuhua", group:"i-dle", debut:2018, members:5, nationality:"台灣", birthy:2000, birthm:1 },
+    { name:"Won Hwayeon", group:"ifeye", debut:2025, members:6, nationality:"南韓", birthy:2006, birthm:6 },
+    { name:"Taerin", group:"ifeye", debut:2025, members:6, nationality:"南韓", birthy:2006, birthm:7 },
+    { name:"Rahee", group:"ifeye", debut:2025, members:6, nationality:"南韓", birthy:2007, birthm:12 },
+    { name:"Kasia", group:"ifeye", debut:2025, members:6, nationality:"南韓", birthy:2008, birthm:2 },
+    { name:"Meu", group:"ifeye", debut:2025, members:6, nationality:"南韓", birthy:2008, birthm:6 },
+    { name:"Sasha", group:"ifeye", debut:2025, members:6, nationality:"南韓", birthy:2009, birthm:5 },
+    { name:"Yunah", group:"ILLIT", debut:2024, members:5, nationality:"南韓", birthy:2004, birthm:1 },
+    { name:"Minju", group:"ILLIT", debut:2024, members:5, nationality:"南韓", birthy:2004, birthm:5 },
+    { name:"Moka", group:"ILLIT", debut:2024, members:5, nationality:"日本", birthy:2004, birthm:10 },
+    { name:"Wonhee", group:"ILLIT", debut:2024, members:5, nationality:"南韓", birthy:2007, birthm:6 },
+    { name:"Iroha", group:"ILLIT", debut:2024, members:5, nationality:"日本", birthy:2008, birthm:2 },
+    { name:"Yeji", group:"ITZY", debut:2019, members:5, nationality:"南韓", birthy:2000, birthm:5 },
+    { name:"Lia", group:"ITZY", debut:2019, members:5, nationality:"南韓", birthy:2000, birthm:7 },
+    { name:"Ryujin", group:"ITZY", debut:2019, members:5, nationality:"南韓", birthy:2001, birthm:4 },
+    { name:"Chaeryeong", group:"ITZY", debut:2019, members:5, nationality:"南韓", birthy:2001, birthm:6 },
+    { name:"Yuna", group:"ITZY", debut:2019, members:5, nationality:"南韓", birthy:2003, birthm:12 },
+    { name:"Gaeul", group:"IVE", debut:2021, members:6, nationality:"南韓", birthy:2002, birthm:9 },
+    { name:"Yujin", group:"IVE", debut:2021, members:6, nationality:"南韓", birthy:2003, birthm:9 },
+    { name:"Rei", group:"IVE", debut:2021, members:6, nationality:"日本", birthy:2004, birthm:2 },
+    { name:"Wonyoung", group:"IVE", debut:2021, members:6, nationality:"南韓", birthy:2004, birthm:8 },
+    { name:"Liz", group:"IVE", debut:2021, members:6, nationality:"南韓", birthy:2004, birthm:11 },
+    { name:"Leeseo", group:"IVE", debut:2021, members:6, nationality:"南韓", birthy:2007, birthm:2 },
+    { name:"MAI", group:"izna", debut:2024, members:6, nationality:"日本", birthy:2004, birthm:10 },
+    { name:"BANG JEE MIN", group:"izna", debut:2024, members:6, nationality:"南韓", birthy:2005, birthm:5 },
+    { name:"KOKO", group:"izna", debut:2024, members:6, nationality:"日本", birthy:2006, birthm:11 },
+    { name:"RYU SA RANG", group:"izna", debut:2024, members:6, nationality:"南韓", birthy:2007, birthm:4 },
+    { name:"CHOI JUNG EUN", group:"izna", debut:2024, members:6, nationality:"南韓", birthy:2007, birthm:8 },
+    { name:"JEONG SAE BI", group:"izna", debut:2024, members:6, nationality:"南韓", birthy:2008, birthm:1 },
+    { name:"Choi Yu Jin", group:"Kep1er", debut:2022, members:6, nationality:"南韓", birthy:1996, birthm:8 },
+    { name:"Shen Xiao Ting", group:"Kep1er", debut:2022, members:6, nationality:"中國", birthy:1999, birthm:11 },
+    { name:"Kim Chae Hyun", group:"Kep1er", debut:2022, members:6, nationality:"南韓", birthy:2002, birthm:4 },
+    { name:"Kim Da Yeon", group:"Kep1er", debut:2022, members:6, nationality:"南韓", birthy:2003, birthm:3 },
+    { name:"Ezaki Hikaru", group:"Kep1er", debut:2022, members:6, nationality:"日本", birthy:2004, birthm:3 },
+    { name:"Huening Bahiyyih", group:"Kep1er", debut:2022, members:6, nationality:"南韓/美國", birthy:2004, birthm:7 },
+    { name:"Leesol", group:"KiiiKiii", debut:2025, members:5, nationality:"南韓", birthy:2005, birthm:9 },
+    { name:"Sui", group:"KiiiKiii", debut:2025, members:5, nationality:"南韓", birthy:2006, birthm:4 },
+    { name:"Jiyu", group:"KiiiKiii", debut:2025, members:5, nationality:"南韓", birthy:2006, birthm:5 },
+    { name:"Haum", group:"KiiiKiii", debut:2025, members:5, nationality:"南韓", birthy:2006, birthm:11 },
+    { name:"Kya", group:"KiiiKiii", debut:2025, members:5, nationality:"南韓", birthy:2010, birthm:12 },
+    { name:"JULIE", group:"KISS OF LIFE", debut:2023, members:4, nationality:"南韓/美國", birthy:2000, birthm:3 },
+    { name:"NATTY", group:"KISS OF LIFE", debut:2023, members:4, nationality:"泰國", birthy:2002, birthm:5 },
+    { name:"BELLE", group:"KISS OF LIFE", debut:2023, members:4, nationality:"南韓/美國", birthy:2004, birthm:3 },
+    { name:"HANEUL", group:"KISS OF LIFE", debut:2023, members:4, nationality:"南韓", birthy:2005, birthm:5 },
+    { name:"Sakura", group:"LE SSERAFIM", debut:2022, members:5, nationality:"日本", birthy:1998, birthm:3 },
+    { name:"Chaewon", group:"LE SSERAFIM", debut:2022, members:5, nationality:"南韓", birthy:2000, birthm:8 },
+    { name:"Yunjin", group:"LE SSERAFIM", debut:2022, members:5, nationality:"南韓/美國", birthy:2001, birthm:10 },
+    { name:"Kazuha", group:"LE SSERAFIM", debut:2022, members:5, nationality:"日本", birthy:2003, birthm:8 },
+    { name:"Eunchae", group:"LE SSERAFIM", debut:2022, members:5, nationality:"南韓", birthy:2006, birthm:11 },
+    { name:"SANGAH", group:"LIGHTSUM", debut:2021, members:6, nationality:"南韓", birthy:2002, birthm:9 },
+    { name:"CHOWON", group:"LIGHTSUM", debut:2021, members:6, nationality:"南韓", birthy:2002, birthm:9 },
+    { name:"NAYOUNG", group:"LIGHTSUM", debut:2021, members:6, nationality:"南韓", birthy:2002, birthm:11 },
+    { name:"HINA", group:"LIGHTSUM", debut:2021, members:6, nationality:"日本", birthy:2003, birthm:4 },
+    { name:"JUHYEON", group:"LIGHTSUM", debut:2021, members:6, nationality:"南韓", birthy:2004, birthm:4 },
+    { name:"YUJEONG", group:"LIGHTSUM", debut:2021, members:6, nationality:"南韓", birthy:2004, birthm:6 },
+    { name:"MASHIRO", group:"MADEIN", debut:2024, members:4, nationality:"日本", birthy:1999, birthm:12 },
+    { name:"MiU", group:"MADEIN", debut:2024, members:4, nationality:"日本", birthy:2003, birthm:1 },
+    { name:"SERINA", group:"MADEIN", debut:2024, members:4, nationality:"日本", birthy:2006, birthm:5 },
+    { name:"NAGOMI", group:"MADEIN", debut:2024, members:4, nationality:"日本", birthy:2007, birthm:7 },
+    { name:"Sooin", group:"MEOVV", debut:2024, members:5, nationality:"南韓", birthy:2005, birthm:4 },
+    { name:"Gawon", group:"MEOVV", debut:2024, members:5, nationality:"南韓/美國", birthy:2005, birthm:4 },
+    { name:"Anna", group:"MEOVV", debut:2024, members:5, nationality:"日本", birthy:2005, birthm:11 },
+    { name:"Narin", group:"MEOVV", debut:2024, members:5, nationality:"南韓", birthy:2007, birthm:8 },
+    { name:"Ella", group:"MEOVV", debut:2024, members:5, nationality:"南韓/美國", birthy:2008, birthm:12 },
+    { name:"Lily", group:"NMIXX", debut:2022, members:6, nationality:"澳洲/南韓", birthy:2002, birthm:10 },
+    { name:"Haewon", group:"NMIXX", debut:2022, members:6, nationality:"南韓", birthy:2003, birthm:2 },
+    { name:"Sullyoon", group:"NMIXX", debut:2022, members:6, nationality:"南韓", birthy:2004, birthm:1 },
+    { name:"Bae", group:"NMIXX", debut:2022, members:6, nationality:"南韓", birthy:2004, birthm:12 },
+    { name:"Jiwoo", group:"NMIXX", debut:2022, members:6, nationality:"南韓", birthy:2005, birthm:4 },
+    { name:"Kyujin", group:"NMIXX", debut:2022, members:6, nationality:"南韓", birthy:2006, birthm:5 },
+    { name:"MAIKA", group:"ODD YOUTH", debut:2024, members:5, nationality:"日本", birthy:2005, birthm:2 },
+    { name:"MYAH", group:"ODD YOUTH", debut:2024, members:5, nationality:"南韓/美國", birthy:2006, birthm:6 },
+    { name:"KANIE", group:"ODD YOUTH", debut:2024, members:5, nationality:"南韓", birthy:2007, birthm:7 },
+    { name:"SUMMER", group:"ODD YOUTH", debut:2024, members:5, nationality:"南韓", birthy:2007, birthm:9 },
+    { name:"YE EUM", group:"ODD YOUTH", debut:2024, members:5, nationality:"南韓", birthy:2007, birthm:12 },
+    { name:"Hyojung", group:"OH MY GIRL", debut:2015, members:6, nationality:"南韓", birthy:1994, birthm:7 },
+    { name:"Mimi", group:"OH MY GIRL", debut:2015, members:6, nationality:"南韓", birthy:1995, birthm:5 },
+    { name:"YooA", group:"OH MY GIRL", debut:2015, members:6, nationality:"南韓", birthy:1995, birthm:9 },
+    { name:"Seunghee", group:"OH MY GIRL", debut:2015, members:6, nationality:"南韓", birthy:1996, birthm:1 },
+    { name:"Yubin", group:"OH MY GIRL", debut:2015, members:6, nationality:"南韓", birthy:1997, birthm:9 },
+    { name:"Arin", group:"OH MY GIRL", debut:2015, members:6, nationality:"南韓", birthy:1999, birthm:6 },
+    { name:"Magenta", group:"QWER", debut:2023, members:4, nationality:"南韓", birthy:1997, birthm:6 },
+    { name:"Chodan", group:"QWER", debut:2023, members:4, nationality:"南韓", birthy:1998, birthm:11 },
+    { name:"Siyeon", group:"QWER", debut:2023, members:4, nationality:"南韓", birthy:2000, birthm:5 },
+    { name:"Hina", group:"QWER", debut:2023, members:4, nationality:"南韓", birthy:2001, birthm:1 },
+    { name:"Irene", group:"Red Velvet", debut:2014, members:5, nationality:"南韓", birthy:1991, birthm:3 },
+    { name:"Seulgi", group:"Red Velvet", debut:2014, members:5, nationality:"南韓", birthy:1994, birthm:2 },
+    { name:"Wendy", group:"Red Velvet", debut:2014, members:5, nationality:"南韓", birthy:1994, birthm:2 },
+    { name:"Joy", group:"Red Velvet", debut:2014, members:5, nationality:"南韓", birthy:1996, birthm:9 },
+    { name:"Yeri", group:"Red Velvet", debut:2014, members:5, nationality:"南韓", birthy:1999, birthm:3 },
+    { name:"Woni", group:"RESCENE", debut:2024, members:5, nationality:"南韓", birthy:2004, birthm:5 },
+    { name:"Liv", group:"RESCENE", debut:2024, members:5, nationality:"南韓", birthy:2006, birthm:10 },
+    { name:"Minami", group:"RESCENE", debut:2024, members:5, nationality:"日本", birthy:2006, birthm:11 },
+    { name:"May", group:"RESCENE", debut:2024, members:5, nationality:"南韓", birthy:2008, birthm:8 },
+    { name:"Zena", group:"RESCENE", debut:2024, members:5, nationality:"南韓", birthy:2008, birthm:11 },
+    { name:"HITOMI", group:"SAY MY NAME", debut:2024, members:8, nationality:"日本", birthy:2001, birthm:10 },
+    { name:"SHUIE", group:"SAY MY NAME", debut:2024, members:8, nationality:"中國", birthy:2004, birthm:6 },
+    { name:"MEI", group:"SAY MY NAME", debut:2024, members:8, nationality:"日本", birthy:2005, birthm:9 },
+    { name:"KANNY", group:"SAY MY NAME", debut:2024, members:8, nationality:"泰國", birthy:2005, birthm:12 },
+    { name:"SOHA", group:"SAY MY NAME", debut:2024, members:8, nationality:"南韓", birthy:2006, birthm:7 },
+    { name:"DOHEE", group:"SAY MY NAME", debut:2024, members:8, nationality:"南韓", birthy:2006, birthm:12 },
+    { name:"JUNHWI", group:"SAY MY NAME", debut:2024, members:8, nationality:"南韓", birthy:2007, birthm:6 },
+    { name:"SEUNGJOO", group:"SAY MY NAME", debut:2024, members:8, nationality:"南韓", birthy:2010, birthm:9 },
+    { name:"Taeyeon", group:"SNSD", debut:2007, members:8, nationality:"南韓", birthy:1989, birthm:3 },
+    { name:"Sunny", group:"SNSD", debut:2007, members:8, nationality:"南韓/美國", birthy:1989, birthm:5 },
+    { name:"Tiffany", group:"SNSD", debut:2007, members:8, nationality:"美國", birthy:1989, birthm:8 },
+    { name:"Hyoyeon", group:"SNSD", debut:2007, members:8, nationality:"南韓", birthy:1989, birthm:9 },
+    { name:"Yuri", group:"SNSD", debut:2007, members:8, nationality:"南韓", birthy:1989, birthm:12 },
+    { name:"Sooyoung", group:"SNSD", debut:2007, members:8, nationality:"南韓", birthy:1990, birthm:2 },
+    { name:"Yoona", group:"SNSD", debut:2007, members:8, nationality:"南韓", birthy:1990, birthm:5 },
+    { name:"Seohyun", group:"SNSD", debut:2007, members:8, nationality:"南韓", birthy:1991, birthm:6 },
+    { name:"IU", group:"SOLO", debut:2008, members:1, nationality:"南韓", birthy:1993, birthm:5 },
+    { name:"Kwon Eunbi", group:"SOLO", debut:2021, members:1, nationality:"南韓", birthy:1995, birthm:9 },
+    { name:"Choi Yena", group:"SOLO", debut:2022, members:1, nationality:"南韓", birthy:1999, birthm:9 },
+    { name:"Lee Chaeyeon", group:"SOLO", debut:2022, members:1, nationality:"南韓", birthy:2000, birthm:1 },
+    { name:"Jo Yuri", group:"SOLO", debut:2021, members:1, nationality:"南韓", birthy:2001, birthm:10 },
+    { name:"GYUBIN", group:"SOLO", debut:2024, members:1, nationality:"南韓", birthy:2006, birthm:11 },
+    { name:"SUMIN", group:"STAYC", debut:2020, members:6, nationality:"南韓", birthy:2001, birthm:3 },
+    { name:"SIEUN", group:"STAYC", debut:2020, members:6, nationality:"南韓", birthy:2001, birthm:8 },
+    { name:"ISA", group:"STAYC", debut:2020, members:6, nationality:"南韓", birthy:2002, birthm:1 },
+    { name:"SEEUN", group:"STAYC", debut:2020, members:6, nationality:"南韓", birthy:2003, birthm:6 },
+    { name:"YOON", group:"STAYC", debut:2020, members:6, nationality:"南韓", birthy:2004, birthm:4 },
+    { name:"J", group:"STAYC", debut:2020, members:6, nationality:"南韓", birthy:2004, birthm:12 },
+    { name:"YooYeon", group:"tripleS", debut:2023, members:24, nationality:"南韓", birthy:2001, birthm:2 },
+    { name:"Mayu", group:"tripleS", debut:2023, members:24, nationality:"日本", birthy:2002, birthm:5 },
+    { name:"Xinyu", group:"tripleS", debut:2023, members:24, nationality:"中國", birthy:2002, birthm:5 },
+    { name:"NaKyoung", group:"tripleS", debut:2023, members:24, nationality:"南韓", birthy:2002, birthm:10 },
+    { name:"SoHyun", group:"tripleS", debut:2023, members:24, nationality:"南韓", birthy:2002, birthm:10 },
+    { name:"DaHyun", group:"tripleS", debut:2023, members:24, nationality:"南韓", birthy:2003, birthm:1 },
+    { name:"Nien", group:"tripleS", debut:2023, members:24, nationality:"台灣", birthy:2003, birthm:6 },
+    { name:"SeoYeon", group:"tripleS", debut:2023, members:24, nationality:"南韓", birthy:2003, birthm:8 },
+    { name:"JiYeon", group:"tripleS", debut:2023, members:24, nationality:"南韓", birthy:2004, birthm:2 },
+    { name:"Kotone", group:"tripleS", debut:2023, members:24, nationality:"日本", birthy:2004, birthm:3 },
+    { name:"ChaeYeon", group:"tripleS", debut:2023, members:24, nationality:"南韓", birthy:2004, birthm:12 },
+    { name:"YuBin", group:"tripleS", debut:2023, members:24, nationality:"南韓", birthy:2005, birthm:2 },
+    { name:"JiWoo", group:"tripleS", debut:2023, members:24, nationality:"南韓", birthy:2005, birthm:10 },
+    { name:"Kaede", group:"tripleS", debut:2023, members:24, nationality:"日本", birthy:2005, birthm:12 },
+    { name:"ShiOn", group:"tripleS", debut:2023, members:24, nationality:"南韓", birthy:2006, birthm:4 },
+    { name:"Lynn", group:"tripleS", debut:2023, members:24, nationality:"日本", birthy:2006, birthm:4 },
+    { name:"Sullin", group:"tripleS", debut:2023, members:24, nationality:"泰國", birthy:2006, birthm:11 },
+    { name:"HyeRin", group:"tripleS", debut:2023, members:24, nationality:"南韓", birthy:2007, birthm:4 },
+    { name:"ChaeWon", group:"tripleS", debut:2023, members:24, nationality:"南韓", birthy:2007, birthm:5 },
+    { name:"HaYeon", group:"tripleS", debut:2023, members:24, nationality:"南韓", birthy:2007, birthm:8 },
+    { name:"SooMin", group:"tripleS", debut:2023, members:24, nationality:"南韓", birthy:2007, birthm:10 },
+    { name:"YeonJi", group:"tripleS", debut:2023, members:24, nationality:"南韓", birthy:2008, birthm:1 },
+    { name:"JooBin", group:"tripleS", debut:2023, members:24, nationality:"南韓", birthy:2009, birthm:1 },
+    { name:"SeoAh", group:"tripleS", debut:2023, members:24, nationality:"南韓", birthy:2010, birthm:6 },
+    { name:"Nayeon", group:"TWICE", debut:2015, members:9, nationality:"南韓", birthy:1995, birthm:9 },
+    { name:"Jeongyeon", group:"TWICE", debut:2015, members:9, nationality:"南韓", birthy:1996, birthm:11 },
+    { name:"Momo", group:"TWICE", debut:2015, members:9, nationality:"日本", birthy:1996, birthm:11 },
+    { name:"Sana", group:"TWICE", debut:2015, members:9, nationality:"日本", birthy:1996, birthm:12 },
+    { name:"Jihyo", group:"TWICE", debut:2015, members:9, nationality:"南韓", birthy:1997, birthm:2 },
+    { name:"Mina", group:"TWICE", debut:2015, members:9, nationality:"日本", birthy:1997, birthm:3 },
+    { name:"Dahyun", group:"TWICE", debut:2015, members:9, nationality:"南韓", birthy:1998, birthm:5 },
+    { name:"Chaeyoung", group:"TWICE", debut:2015, members:9, nationality:"南韓", birthy:1999, birthm:4 },
+    { name:"Tzuyu", group:"TWICE", debut:2015, members:9, nationality:"台灣", birthy:1999, birthm:6 },
+    { name:"Eunha", group:"VIVIZ", debut:2022, members:3, nationality:"南韓", birthy:1997, birthm:5 },
+    { name:"SinB", group:"VIVIZ", debut:2022, members:3, nationality:"南韓", birthy:1998, birthm:6 },
+    { name:"Umji", group:"VIVIZ", debut:2022, members:3, nationality:"南韓", birthy:1998, birthm:8 },
+    { name:"SeolA", group:"WJSN", debut:2016, members:10, nationality:"南韓", birthy:1994, birthm:12 },
+    { name:"BoNa", group:"WJSN", debut:2016, members:10, nationality:"南韓", birthy:1995, birthm:8 },
+    { name:"Exy", group:"WJSN", debut:2016, members:10, nationality:"南韓", birthy:1995, birthm:11 },
+    { name:"SooBin", group:"WJSN", debut:2016, members:10, nationality:"南韓", birthy:1996, birthm:7 },
+    { name:"Luda", group:"WJSN", debut:2016, members:10, nationality:"南韓", birthy:1997, birthm:2 },
+    { name:"DaWon", group:"WJSN", debut:2016, members:10, nationality:"南韓", birthy:1997, birthm:5 },
+    { name:"EunSeo", group:"WJSN", debut:2016, members:10, nationality:"南韓", birthy:1998, birthm:5 },
+    { name:"YeoReum", group:"WJSN", debut:2016, members:10, nationality:"南韓", birthy:1999, birthm:1 },
+    { name:"DaYoung", group:"WJSN", debut:2016, members:10, nationality:"南韓", birthy:1999, birthm:5 },
+    { name:"YeonJung", group:"WJSN", debut:2016, members:10, nationality:"南韓", birthy:1999, birthm:8 },
+    { name:"Sunhye", group:"YOUNG POSSE", debut:2023, members:5, nationality:"南韓", birthy:2004, birthm:4 },
+    { name:"Yeonjung", group:"YOUNG POSSE", debut:2023, members:5, nationality:"南韓", birthy:2004, birthm:9 },
+    { name:"Jiana", group:"YOUNG POSSE", debut:2023, members:5, nationality:"南韓", birthy:2006, birthm:2 },
+    { name:"Doeun", group:"YOUNG POSSE", debut:2023, members:5, nationality:"南韓", birthy:2007, birthm:12 },
+    { name:"Jieun", group:"YOUNG POSSE", debut:2023, members:5, nationality:"南韓", birthy:2009, birthm:11 }
 ];
 
+// 遊戲變數
 let answer = {}, gameOver = false, guessCount = 0, currentMax = 6;
 let guessedSet = new Set();
 let timerInterval = null;
 let timeLeft = 0;
 let gameStarted = false;
 
+let selectedDifficulty = null;
+let selectedTime = null;
+let selectedYears = new Set();
+
 const guessInput = document.getElementById('guessInput');
-const suggestions = document.getElementById('suggestions');
 const gameBody = document.getElementById('gameBody');
 const result = document.getElementById('result');
 const timerDisplay = document.getElementById('timer');
 
-function getNationalityClass(guessed, correct) {
-    if (guessed === correct) return 'correct';
-    const g = guessed.split('/').map(s => s.trim());
-    const c = correct.split('/').map(s => s.trim());
-    return g.some(gg => c.includes(gg)) || c.some(cc => g.includes(cc)) ? 'close' : 'wrong';
+// ================== 年份過濾 ==================
+function isInSelectedYears(debut) {
+    if (selectedYears.size === 0) return true;
+    
+    for (let range of selectedYears) {
+        if (range === "2020-2026" && debut >= 2020 && debut <= 2026) return true;
+        if (range === "2015-2019" && debut >= 2015 && debut <= 2019) return true;
+        if (range === "2014-") {
+            // 自動使用資料庫中最小的出道年
+            const minDebut = Math.min(...idols.map(i => i.debut));
+            if (debut >= minDebut && debut <= 2014) return true;
+        }
+    }
+    return false;
 }
 
-function disableInput() {
-    guessInput.disabled = true;
-    suggestions.innerHTML = "";
-}
-
-function showFinalAnswer() {
-    result.innerHTML = `正確答案是 <b>${answer.name} (${answer.group})</b>`;
-}
-
-// ================== 遊戲設定 ==================
+// ================== 按鈕功能 ==================
 function selectDifficulty(max) {
-    currentMax = max;
+    selectedDifficulty = max;
+    document.querySelectorAll('#gameSetup .btn-group button[id^="diff"]').forEach(b => b.classList.remove('selected'));
+    document.getElementById(`diff${max}`).classList.add('selected');
+}
+
+function toggleYear(btn) {
+    const range = btn.getAttribute('data-year');
+    if (selectedYears.has(range)) {
+        selectedYears.delete(range);
+        btn.classList.remove('selected');
+    } else {
+        selectedYears.add(range);
+        btn.classList.add('selected');
+    }
+}
+
+function selectTime(seconds) {
+    selectedTime = seconds;
+    document.querySelectorAll('#gameSetup .btn-group button[id^="time"]').forEach(b => b.classList.remove('selected'));
+    document.getElementById(`time${seconds}`).classList.add('selected');
+}
+
+// ================== 遊戲控制 ==================
+function startGameWithSettings() {
+    if (!selectedDifficulty) return alert("請選擇難度！");
+    if (selectedYears.size === 0) return alert("請至少選擇一個年份範圍！");
+    if (selectedTime === null) return alert("請選擇作答時間！");
+
+    startNewGame(selectedDifficulty, selectedTime);
+}
+
+function confirmNewGame() {
+    if (gameStarted && !gameOver && guessCount > 0 && !confirm("確定要放棄目前遊戲，開始新的一局嗎？")) return;
+    
+    // 新遊戲：重置狀態，但允許重新調整設定
+    gameOver = false;
+    guessCount = 0;
+    guessedSet.clear();
+    gameStarted = false;
+    result.innerHTML = "";
+    guessInput.value = "";
+    guessInput.disabled = true;
+
+    if (timerInterval) clearInterval(timerInterval);
+    updateTimerDisplay(selectedTime || 0);
+
     initTableRows();
+    disableGameSettings(false);   // 允許重新調整設定
+}
+
+function startNewGame(max, timeLimit) {
+    let filteredIdols = idols.filter(idol => isInSelectedYears(idol.debut));
+    
+    if (filteredIdols.length === 0) {
+        return alert("目前年份設定沒有符合的藝人，請調整年份範圍！");
+    }
+
+    currentMax = max;
+    answer = filteredIdols[Math.floor(Math.random() * filteredIdols.length)];
+    
+    gameOver = false;
+    guessCount = 0;
+    guessedSet.clear();
+    gameStarted = true;
+    result.innerHTML = "";
+    guessInput.value = "";
+    guessInput.disabled = false;
+
+    initTableRows();
+    updateTimerDisplay(timeLimit);
+
+    if (timerInterval) clearInterval(timerInterval);
+    timeLeft = timeLimit;
+
+    // 開始遊戲才啟動計時器
+    if (timeLimit > 0) {
+        startTimer(timeLimit);
+    }
+
+    disableGameSettings(true);   // 鎖定設定
 }
 
 function initTableRows() {
@@ -591,46 +566,13 @@ function initTableRows() {
         let cell = row.insertCell();
         cell.textContent = i;
         cell.classList.add('count-col');
-        for (let j = 0; j < 6; j++) {
-            row.insertCell();
-        }
+        for (let j = 0; j < 7; j++) row.insertCell();
     }
 }
 
-function startGameWithSettings() {
-    if (!gameOver && guessCount > 0 && !confirm("確定要放棄目前遊戲，開始新的一局嗎？")) return;
-    const timeSelect = parseInt(document.getElementById('timeLimit').value);
-    startNewGame(currentMax, timeSelect);
-}
-
-function confirmNewGame() {
-    if (!gameOver && guessCount > 0 && !confirm("確定要放棄目前遊戲，開始新的一局嗎？")) return;
-    const timeSelect = parseInt(document.getElementById('timeLimit').value);
-    startNewGame(currentMax, timeSelect);
-}
-
-function startNewGame(max, timeLimit) {
-    currentMax = max;
-    answer = idols[Math.floor(Math.random() * idols.length)];
-    gameOver = false;
-    guessCount = 0;
-    guessedSet.clear();
-    gameStarted = true;
-    result.innerHTML = "";
-    guessInput.value = "";
-    suggestions.innerHTML = "";
-    guessInput.disabled = false;
-
-    updateTimerDisplay(timeLimit);
-    if (timerInterval) clearInterval(timerInterval);
-    timeLeft = timeLimit;
-    initTableRows();
-    if (timeLimit > 0) startTimer(timeLimit);
-}
-
 function updateTimerDisplay(seconds) {
-    timerDisplay.textContent = seconds > 0
-        ? `本次回答剩餘時間：${seconds} 秒`
+    timerDisplay.textContent = seconds > 0 
+        ? `本次回答剩餘時間：${seconds} 秒` 
         : `本次回答剩餘時間：不計時`;
 }
 
@@ -651,17 +593,13 @@ function skipCurrentGuess() {
     if (guessCount >= currentMax) return;
     guessCount++;
     markRowAsTimeout(guessCount);
-
     if (guessCount >= currentMax) {
         gameOver = true;
-        timerDisplay.textContent = `本次回答剩餘時間：結束`;
         showFinalAnswer();
         disableInput();
         return;
     }
-    
-    const timeSelect = parseInt(document.getElementById('timeLimit').value);
-    if (timeSelect > 0) startTimer(timeSelect);
+    if (selectedTime > 0) startTimer(selectedTime);
 }
 
 function markRowAsTimeout(rowNum) {
@@ -669,20 +607,28 @@ function markRowAsTimeout(rowNum) {
     if (rowNum > 0 && rowNum <= rows.length) {
         const row = rows[rowNum - 1];
         row.cells[1].textContent = "已超時";
-        row.cells[1].colSpan = 6;
+        row.cells[1].colSpan = 7;
         row.cells[1].classList.add('timeout');
-        for (let i = row.cells.length - 1; i >= 2; i--) {
-            row.deleteCell(i);
-        }
+        for (let i = row.cells.length - 1; i >= 2; i--) row.deleteCell(i);
     }
+}
+
+function disableInput() {
+    guessInput.disabled = true;
+}
+
+function showFinalAnswer() {
+    result.innerHTML = `正確答案是 <b>${answer.name} (${answer.group})</b>`;
+    disableGameSettings(false);   // 遊戲結束後恢復設定
 }
 
 // ================== 猜測功能 ==================
 function showSuggestions() {
     let input = guessInput.value.toLowerCase().trim();
+    const suggestions = document.getElementById('suggestions');
     suggestions.innerHTML = "";
     if (!input || gameOver || !gameStarted) return;
-    
+
     let filtered = idols.filter(i =>
         !guessedSet.has(i.name + i.group) &&
         (i.name.toLowerCase().includes(input) || i.group.toLowerCase().includes(input))
@@ -693,6 +639,7 @@ function showSuggestions() {
         d.textContent = `${i.name} (${i.group})`;
         d.onclick = () => {
             guessInput.value = `${i.name} (${i.group})`;
+            suggestions.innerHTML = "";
             guess();
         };
         suggestions.appendChild(d);
@@ -700,12 +647,7 @@ function showSuggestions() {
 }
 
 function guess() {
-    if (!gameStarted) {
-        alert("請先按「開始遊戲」！");
-        return;
-    }
-    if (gameOver || guessCount >= currentMax) return;
-    
+    if (!gameStarted || gameOver || guessCount >= currentMax) return;
     const input = guessInput.value.trim();
     if (!input) return;
 
@@ -714,72 +656,96 @@ function guess() {
         alert("找不到這個偶像！");
         return;
     }
-   
+
+    if (!isInSelectedYears(idol.debut)) {
+        alert("此偶像不在目前選擇的年份範圍內！");
+        guessInput.value = "";
+        return;
+    }
+
     let key = idol.name + idol.group;
     if (guessedSet.has(key)) return;
-   
+
     guessedSet.add(key);
     guessCount++;
-   
+
     if (timerInterval) clearInterval(timerInterval);
-   
     fillRow(guessCount, idol);
 
     if (idol.name === answer.name && idol.group === answer.group) {
         gameOver = true;
-        timerDisplay.textContent = `本次回答剩餘時間：完成！`;
-        showFinalAnswer();     // 猜對時顯示答案
+        showFinalAnswer();
         disableInput();
         return;
     }
-   
+
     if (guessCount >= currentMax) {
         gameOver = true;
-        timerDisplay.textContent = `本次回答剩餘時間：結束`;
-        showFinalAnswer();     // 用完次數時顯示答案
+        showFinalAnswer();
         disableInput();
         return;
     }
-   
+
     guessInput.value = "";
-    suggestions.innerHTML = "";
-   
-    const timeSelect = parseInt(document.getElementById('timeLimit').value);
-    if (timeSelect > 0) startTimer(timeSelect);
+    if (selectedTime > 0) startTimer(selectedTime);
 }
 
 function fillRow(rowNum, idol) {
     const rows = gameBody.rows;
-    if (rowNum > 0 && rowNum <= rows.length) {
-        const row = rows[rowNum - 1];
-        
-        row.cells[1].textContent = idol.name;
-        row.cells[1].classList.add(idol.name === answer.name ? 'correct' : 'wrong');
-       
-        row.cells[2].textContent = idol.group;
-        row.cells[2].classList.add(idol.group === answer.group ? 'correct' : 'wrong');
-       
-        row.cells[3].textContent = idol.nationality;
-        row.cells[3].classList.add(getNationalityClass(idol.nationality, answer.nationality));
-       
-        row.cells[4].textContent = idol.birth;
-        if (idol.birth === answer.birth) row.cells[4].classList.add('correct');
-        else if (Math.abs(idol.birth - answer.birth) <= 1) row.cells[4].classList.add('close');
-        else row.cells[4].classList.add('wrong');
-       
-        row.cells[5].textContent = idol.debut;
-        if (idol.debut === answer.debut) row.cells[5].classList.add('correct');
-        else if (Math.abs(idol.debut - answer.debut) <= 1) row.cells[5].classList.add('close');
-        else row.cells[5].classList.add('wrong');
-       
-        row.cells[6].textContent = idol.members;
-        if (idol.members === answer.members) row.cells[6].classList.add('correct');
-        else if (Math.abs(idol.members - answer.members) <= 1) row.cells[6].classList.add('close');
-        else row.cells[6].classList.add('wrong');
-    }
+    if (rowNum < 1 || rowNum > rows.length) return;
+    
+    const row = rows[rowNum - 1];
+    row.cells[1].textContent = idol.name;
+    row.cells[1].classList.add(idol.name === answer.name ? 'correct' : 'wrong');
+    row.cells[2].textContent = idol.group;
+    row.cells[2].classList.add(idol.group === answer.group ? 'correct' : 'wrong');
+    row.cells[3].textContent = idol.debut;
+    row.cells[3].classList.add(getCloseClass(idol.debut, answer.debut));
+    row.cells[4].textContent = idol.members;
+    row.cells[4].classList.add(getCloseClass(idol.members, answer.members));
+    row.cells[5].textContent = idol.nationality;
+    row.cells[5].classList.add(getNationalityClass(idol.nationality, answer.nationality));
+    row.cells[6].textContent = idol.birthy;
+    row.cells[6].classList.add(getCloseClass(idol.birthy, answer.birthy));
+    row.cells[7].textContent = idol.birthm;
+    row.cells[7].classList.add(getCloseClass(idol.birthm, answer.birthm));
 }
 
-// ================== 題庫 ==================
+function getCloseClass(guessed, correct) {
+    if (guessed === correct) return 'correct';
+    if (Math.abs(guessed - correct) === 1) return 'close';
+    return 'wrong';
+}
+
+function getNationalityClass(guessed, correct) {
+    if (guessed === correct) return 'correct';
+    const g = guessed.split('/').map(s => s.trim());
+    const c = correct.split('/').map(s => s.trim());
+    return g.some(gg => c.includes(gg)) || c.some(cc => g.includes(cc)) ? 'close' : 'wrong';
+}
+
+guessInput.addEventListener('keypress', e => {
+    if (e.key === 'Enter') guess();
+});
+
+// ================== 設定鎖定 ==================
+function disableGameSettings(disabled) {
+    document.querySelectorAll('#gameSetup .btn-group button').forEach(btn => {
+        btn.disabled = disabled;
+    });
+}
+
+// ================== 其他功能 ==================
+function showUpdateInfo() {
+    alert(`🎉 遊戲更新
+
+• 新增功能：可自選題庫年份
+• 新增判定選項：藝人的出生月份
+• 題庫新增更多藝人，詳情點擊題庫
+ 
+更新日期：2026/4/19`);
+}
+
 function showDatabase() {
     document.getElementById('databaseModal').style.display = "flex";
     updateSearchOptions();
@@ -795,14 +761,12 @@ function updateSearchOptions() {
     const datalist = document.getElementById('searchList');
     datalist.innerHTML = "";
     if (type === "all") return;
-    
     let values = [...new Set(idols.map(i => i[type]))];
-    if (type === "members" || type === "birth" || type === "debut") {
-        values.sort((a, b) => Number(a) - Number(b));
+    if (["birthy","birthm","debut","members"].includes(type)) {
+        values.sort((a,b) => Number(a)-Number(b));
     } else {
-        values.sort((a, b) => String(a).localeCompare(String(b)));
+        values.sort((a,b) => String(a).localeCompare(String(b)));
     }
-    
     values.forEach(v => {
         let opt = document.createElement("option");
         opt.value = v;
@@ -825,10 +789,11 @@ function renderDatabase() {
         let r = tbody.insertRow();
         r.insertCell().textContent = i.name;
         r.insertCell().textContent = i.group;
-        r.insertCell().textContent = i.nationality;
-        r.insertCell().textContent = i.birth;
         r.insertCell().textContent = i.debut;
         r.insertCell().textContent = i.members;
+        r.insertCell().textContent = i.nationality;
+        r.insertCell().textContent = i.birthy;
+        r.insertCell().textContent = i.birthm;
     });
 }
 
@@ -841,18 +806,16 @@ function showRules() {
     (1)國籍：其中一個正確
     (2)出生年、出道年、成員數：正負1之內
 4. 題庫皆為現役藝人，遊玩前可先查看題庫
-5. 有任何建議歡迎到Threads與我聊聊
-
-祝你玩得愉快！`);
+5. 有任何建議歡迎到Threads與我聊聊`);
 }
 
-guessInput.addEventListener('keypress', e => {
-    if (e.key === 'Enter') guess();
-});
-
 window.onload = () => {
-    initTableRows();
     guessInput.disabled = true;
+    disableGameSettings(false); // 初始狀態允許調整設定
+
+// 計算最小出道年（給「2014以前」使用）
+    const minDebut = Math.min(...idols.map(i => i.debut));
+    console.log("資料庫中最小的出道年是：" + minDebut);  // 可在開發者工具中查看
 };
 </script>
 </body>
