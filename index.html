@@ -761,31 +761,66 @@ function updateSearchOptions() {
     const type = document.getElementById('mainFilter').value;
     const datalist = document.getElementById('searchList');
     datalist.innerHTML = "";
-    if (type === "all") return;
-    let values = [...new Set(idols.map(i => i[type]))];
-    if (["birthy","birthm","debut","members"].includes(type)) {
-        values.sort((a,b) => Number(a)-Number(b));
+
+    if (type === "all") {
+        // 全部時顯示所有名字，並按 A~Z 排序
+        const names = [...new Set(idols.map(i => i.name))].sort((a, b) => a.localeCompare(b));
+        names.forEach(name => {
+            let opt = document.createElement("option");
+            opt.value = name;
+            datalist.appendChild(opt);
+        });
     } else {
-        values.sort((a,b) => String(a).localeCompare(String(b)));
+        let values = [...new Set(idols.map(i => i[type]))];
+        if (["birthy", "birthm", "debut", "members"].includes(type)) {
+            values.sort((a, b) => Number(a) - Number(b));
+        } else {
+            values.sort((a, b) => String(a).localeCompare(String(b)));
+        }
+        values.forEach(v => {
+            let opt = document.createElement("option");
+            opt.value = v;
+            datalist.appendChild(opt);
+        });
     }
-    values.forEach(v => {
-        let opt = document.createElement("option");
-        opt.value = v;
-        datalist.appendChild(opt);
-    });
 }
 
 function renderDatabase() {
     const tbody = document.getElementById('dbBody');
     tbody.innerHTML = "";
+
     const type = document.getElementById('mainFilter').value;
     const keyword = document.getElementById('searchInput').value.trim().toLowerCase();
-    
+
     let filtered = idols;
-    if (type !== "all" && keyword) {
-        filtered = idols.filter(i => String(i[type]).toLowerCase().includes(keyword));
+
+    // 關鍵字篩選
+    if (keyword) {
+        if (type === "all") {
+            filtered = idols.filter(i => 
+                i.name.toLowerCase().includes(keyword) || 
+                i.group.toLowerCase().includes(keyword)
+            );
+        } else {
+            filtered = idols.filter(i => String(i[type]).toLowerCase().includes(keyword));
+        }
     }
-    
+
+    // === 重點：統一排序邏輯 ===
+    filtered.sort((a, b) => {
+        // 1. 出道年排序
+        if (a.debut !== b.debut) return a.debut - b.debut;
+        
+        // 2. 出生年排序
+        if (a.birthy !== b.birthy) return a.birthy - b.birthy;
+        
+        // 3. 出生月排序
+        if (a.birthm !== b.birthm) return a.birthm - b.birthm;
+        
+        // 4. 名字 A~Z 排序
+        return a.name.localeCompare(b.name);
+    });
+
     filtered.forEach(i => {
         let r = tbody.insertRow();
         r.insertCell().textContent = i.name;
