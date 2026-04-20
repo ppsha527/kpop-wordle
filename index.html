@@ -714,7 +714,20 @@ function fillRow(rowNum, idol) {
 
 function getCloseClass(guessed, correct) {
     if (guessed === correct) return 'correct';
-    if (Math.abs(guessed - correct) === 1) return 'close';
+
+    // 出生月特別處理：支援循環（1月與12月視為接近）
+    if (typeof guessed === 'number' && typeof correct === 'number') {
+        const diff = Math.abs(guessed - correct);
+        
+        // 一般情況 ±1
+        if (diff === 1) return 'close';
+        
+        // 特殊情況：1月和12月互相接近
+        if ((guessed === 1 && correct === 12) || (guessed === 12 && correct === 1)) {
+            return 'close';
+        }
+    }
+
     return 'wrong';
 }
 
@@ -840,7 +853,8 @@ function showRules() {
 3. 綠色=正確，黃色=接近，灰色=錯誤
    -接近的判定範圍
     (1)國籍：其中一個正確
-    (2)出生年、出生月、出道年、成員數：正負1
+    (2)出生年、出道年、成員數：正負1
+    (3)出生月：正負1，1月和12月視為接近
 4. 題庫皆為現役藝人，遊玩前可先查看題庫
 5. 有任何建議歡迎到Threads與我聊聊`);
 }
